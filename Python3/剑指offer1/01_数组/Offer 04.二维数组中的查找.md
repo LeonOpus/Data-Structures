@@ -71,7 +71,7 @@
 - 空间复杂度 `O(1)`
   - 只使用了几个变量
 
-### Python 代码
+### 代码
 
 ```python{cmd="python3"}
 from typing import List

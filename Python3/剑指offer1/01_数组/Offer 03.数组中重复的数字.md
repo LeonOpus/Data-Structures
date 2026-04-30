@@ -48,7 +48,7 @@
 - 空间复杂度 `O(1)`
     - 原地更改数组, 只使用了几个变量
 
-### Python 代码
+### 代码
 ```python{cmd= "python3"}
 from typing import List
 class Solution:
