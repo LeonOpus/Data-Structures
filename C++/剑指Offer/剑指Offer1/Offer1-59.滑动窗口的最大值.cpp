@@ -2,15 +2,15 @@
 
 > [原题链接](https://leetcode-cn.com/problems/hua-dong-chuang-kou-de-zui-da-zhi-lcof/)
 
-## 题目描述
+题目描述
 
 给定一个数组 nums 和滑动窗口的大小 k，请找出所有滑动窗口里的最大值。
 
 - 你可以假设 k 总是有效的，在输入数组不为空的情况下，1 ≤ k ≤ 输入数组的大小。
 
-## 题目样例
+题目样例
 
-### 示例
+示例
 
 ```
 输入: nums = [1,3,-1,-3,5,3,6,7], 和 k = 3
@@ -27,13 +27,13 @@
  1  3  -1  -3  5 [3  6  7]      7
 ```
 
-## 题目思考
+题目思考
 
 1. 如果要求时间复杂度为 O(N), 该如何做?
 
-## 解决方案
+解决方案
 
-#### 思路
+思路
 
 - 一个比较容易想到的思路是暴力法, 即固定每个起点, 然后求它之后 k 个元素的最大值并依次加入结果中, 这样时间复杂度为 O(Nk), 当 k 很大的时候效率非常低, 该如何提高效率呢?
 - 重新观察题目示例, 如果我们能够动态维护当前窗口的最大值, 那么在窗口移动的时候只需要用 O(1)时间返回这个值即可
@@ -48,37 +48,37 @@
 - 根据上述过程, 我们只需要处理头和尾的插入删除操作, 很显然**双端队列**就是最合适的数据结构, 两种操作都只需要 O(1)时间
 - 下面代码对必要的步骤有详细的解释, 特别是对步骤 1 和 2 的一些关键点的解释, 方便大家理解
 
-#### 复杂度
+复杂度
 
 - 时间复杂度 O(N): 每个值最多加入和移出双端队列各一次, 总共 2N 次操作, 所以时间复杂度是 O(N)
 - 空间复杂度 O(k): 双端队列最多存 k 个值
 
-#### 代码
-
-```python
-class Solution:
-    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-        # 单调双端队列, 左边存窗口最小值, 右边存窗口最大值
-        q = collections.deque()
-        res = []
-        left = 0
-        for right in range(len(nums)):
-            # 步骤1 (当加入当前值后窗口长度会超过 k 时, 即right>=k) - 移除老的左边界值: 如果它恰好是最大值, 也移除队列尾
-            # 注意左边界如果不是最大值的话, 不会存在于队列中, 因为它后面总有更大的值将左边界从队列中淘汰出去 (步骤2的操作)
-            if right >= k:
-                if nums[left] == q[-1]:
-                    q.pop()
-                left += 1
-            # 步骤2 (可以和步骤1互换位置) - 加入新的右边界值: 此时需要先不断移除队列左侧最小值, 直到当前新值成为新的最小值再插入左侧, 因为更小的值绝不可能成为最大值的候选项(又旧, 值又小)
-            # 注意这里需要是小于而不能是小于等于, 因为如果当最小值等于当前值且都被移除的话, 如果它恰好也是最大值, 那么下次移除左边界的时候就会错误地将当前的值给移除, 而不是移除左边界对应的那个值, 这样会导致后面的最大值计算出现错误
-            while q and q[0] < nums[right]:
-                q.popleft()
-            q.appendleft(nums[right])
-            # 步骤3 (当加入当前值后窗口长度达到 k 时, 即right>=k-1) - 将队列右侧最大值加入最终结果中
-            if right >= k - 1:
-                res.append(q[-1])
-        return res
-```
-
----
  */
+#include <iostream>
+#include <vector>
+#include <deque>
+using namespace std;
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> dq; // stores indices, front = max
+        vector<int> res;
+        for (int i = 0; i < (int)nums.size(); i++) {
+            while (!dq.empty() && nums[dq.back()] <= nums[i]) dq.pop_back();
+            dq.push_back(i);
+            if (dq.front() <= i - k) dq.pop_front(); // out of window
+            if (i >= k - 1) res.push_back(nums[dq.front()]);
+        }
+        return res;
+    }
+};
+
+int main() {
+    Solution s;
+    vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
+    auto res = s.maxSlidingWindow(nums, 3);
+    for (int x : res) cout << x << " ";
+    cout << endl;
+    return 0;
+}

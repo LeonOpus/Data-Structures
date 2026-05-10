@@ -30,23 +30,6 @@ nums = [1,2,3,4]
   - 只需要遍历一遍数组
 - 空间复杂度 `O(N)`
   - 额外需要一个数组存 N 个元素
-代码
-```python
-class Solution:
-    def exchange(self, nums: List[int]) -> List[int]:
-        odd, even = 0, len(nums) - 1
-        res = [0] * len(nums)
-        for n in nums:
-            if n & 1:
-#当前是奇数, 存到新数组奇数下标处, 同时下标右移
-                res[odd] = n
-                odd += 1
-            else:
-#当前是偶数, 存到新数组偶数下标处, 同时下标左移
-                res[even] = n
-                even -= 1
-        return res
-```
 方案 2
 思路
 分析
@@ -61,24 +44,60 @@ class Solution:
   - 每个数字只需要被遍历一遍
 - 空间复杂度 `O(1)`
   - 只需要几个变量
-代码
-```python
-class Solution:
-    def exchange(self, nums: List[int]) -> List[int]:
-        i, j = 0, len(nums) - 1
-        while i < j:
-            while i < j and nums[i] & 1:
-#如果当前本身就是奇数, 继续往后找
-                i += 1
-            while i < j and nums[j] & 1 == 0:
-#如果当前本身就是偶数, 继续往前找
-                j -= 1
-            if i < j:
-#找到一对不满足条件的奇偶数, 交换它们位置
-                nums[i], nums[j] = nums[j], nums[i]
-            i += 1
-            j -= 1
-        return nums
-```
 ---
- */
+*/
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Solution
+{
+public:
+    vector<int> exchange(vector<int>& nums)
+    {
+        int i = 0, j = (int)nums.size() - 1;
+        while (i < j)
+        {
+            // 从左找第一个偶数
+            while (i < j && (nums[i] & 1))
+                i++;
+            // 从右找第一个奇数
+            while (i < j && !(nums[j] & 1))
+                j--;
+            if (i < j)
+                swap(nums[i], nums[j]);
+            i++;
+            j--;
+        }
+        return nums;
+    }
+};
+
+int main()
+{
+    Solution s;
+
+    // 示例: [1,2,3,4] => [1,3,2,4] 或 [3,1,2,4]
+    vector<int> nums1 = {1, 2, 3, 4};
+    vector<int> res1 = s.exchange(nums1);
+    cout << "输入 [1,2,3,4] => [";
+    for (int i = 0; i < (int)res1.size(); i++)
+    {
+        if (i) cout << ",";
+        cout << res1[i];
+    }
+    cout << "]" << endl;
+
+    // 示例: [2,4,6,1,3] => 奇数在前偶数在后
+    vector<int> nums2 = {2, 4, 6, 1, 3};
+    vector<int> res2 = s.exchange(nums2);
+    cout << "输入 [2,4,6,1,3] => [";
+    for (int i = 0; i < (int)res2.size(); i++)
+    {
+        if (i) cout << ",";
+        cout << res2[i];
+    }
+    cout << "]" << endl;
+
+    return 0;
+}

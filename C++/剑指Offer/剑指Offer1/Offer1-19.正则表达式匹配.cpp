@@ -8,20 +8,16 @@
 题目样例
 示例 1
 输入
-```
 s = "aa"
 p = "a"
-```
 输出
 false
 解释
 "a" 无法匹配 "aa" 整个字符串。
 示例 2
 输入
-```
 s = "aa"
 p = "a*"
-```
 输出
 true
 解释
@@ -29,10 +25,8 @@ true
 因此，字符串 "aa" 可被视为 'a' 重复了一次。
 示例 3
 输入
-```
 s = "aab"
 p = "c*a*b"
-```
 输出
 true
 解释
@@ -58,39 +52,68 @@ true
   - 采用了记忆化方法, 每个字符只需要计算一次匹配
 - 空间复杂度 `O(MN)`
   - 需要存所有下标组合的匹配结果
-代码
-```python
-class Solution:
-    def isMatch(self, s: str, p: str) -> bool:
-        # 记忆化搜索
-        memo = {}
-        def match(i, j):
-            # 如果(i, j)已经在memo中就不要重复计算了
-            if (i, j) not in memo:
-                if j == len(p):
-                    # 模式串p遍历完了, 那么只有当s正好也遍历完才满足要求
-                    memo[i, j] = i == len(s)
-                elif i == len(s):
-                    # 此时意味着s遍历完了, 但模式串p仍然有值, 这时候只有当后面的模式串都是x*x*这样的形式才可以, 代表后面的x*都只匹配0次
-                    # 所以需要判断p[j+1]是否是*, 是的话继续递归判断(i,j+2)组合, 否则直接返回False
-                    if j + 1 < len(p) and p[j + 1] == '*':
-                        memo[i, j] = match(i, j + 2)
-                    else:
-                        memo[i, j] = False
-                else:
-                    # 意味着s和p都没遍历完
-                    if j + 1 < len(p) and p[j + 1] == '*':
-                        # 下一个p字符是*, 意味着当前字符可以不使用, 首先考虑这种情况
-                        memo[i, j] = match(i, j + 2)
-                        if s[i] == p[j] or p[j] == '.':
-                            # 但如果当前字符恰好匹配的话, 也可以使用它, j位置保持不变, i后移
-                            memo[i, j] |= match(i + 1, j)
-                    else:
-                        # 下一个p字符不是*, 必须老老实实根据当前字符匹配了
-                        memo[i, j] = (s[i] == p[j] or p[j] == '.') and match(
-                            i + 1, j + 1)
-            return memo[i, j]
-        return match(0, 0)
-```
----
- */
+*/
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution
+{
+public:
+    bool isMatch(string s, string p)
+    {
+        int m = s.size(), n = p.size();
+        // dp[i][j] 表示 s[0..i-1] 与 p[0..j-1] 是否匹配
+        vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
+        dp[0][0] = true;
+        // 初始化: s 为空时, p 必须是 x*x*... 的形式才能匹配
+        for (int j = 2; j <= n; j++)
+        {
+            if (p[j - 1] == '*')
+            {
+                dp[0][j] = dp[0][j - 2];
+            }
+        }
+        for (int i = 1; i <= m; i++)
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                if (p[j - 1] == '*')
+                {
+                    // * 匹配 0 次: 跳过 x* 组合
+                    dp[i][j] = dp[i][j - 2];
+                    // * 匹配 1 次或多次: 前一个模式字符与 s[i-1] 匹配
+                    if (p[j - 2] == '.' || p[j - 2] == s[i - 1])
+                    {
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
+                }
+                else if (p[j - 1] == '.' || p[j - 1] == s[i - 1])
+                {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
+
+int main()
+{
+    Solution s;
+    cout << boolalpha;
+    // "aa" vs "a" => false
+    cout << s.isMatch("aa", "a") << endl;
+    // "aa" vs "a*" => true
+    cout << s.isMatch("aa", "a*") << endl;
+    // "aab" vs "c*a*b" => true
+    cout << s.isMatch("aab", "c*a*b") << endl;
+    // "mississippi" vs "mis*is*p*." => false
+    cout << s.isMatch("mississippi", "mis*is*p*.") << endl;
+    // "" vs "" => true
+    cout << s.isMatch("", "") << endl;
+    // "a" vs ".*" => true
+    cout << s.isMatch("a", ".*") << endl;
+    return 0;
+}

@@ -21,17 +21,6 @@
   - 只需要遍历一遍链表
 - 空间复杂度 `O(N)`
   - 额外需要一个数组存 N 个节点
-代码
-```python
-class Solution:
-    def getKthFromEnd(self, head: ListNode, k: int) -> ListNode:
-        # 方法1: 数组存储每个节点
-        arr = []
-        while head:
-            arr.append(head)
-            head= head.next
-        return arr[len(arr)-k]
-```
 方案 2
 思路
 - 如果我们能得到链表节点数目 `n`, 那么倒数第 `k` 个节点就是正数第 `n-k+1` 个节点 (从 1 开始计数)
@@ -42,21 +31,6 @@ class Solution:
   - 只需要遍历两遍链表
 - 空间复杂度 `O(1)`
   - 只需要几个变量
-代码
-```python
-class Solution:
-    def getKthFromEnd(self, head: ListNode, k: int) -> ListNode:
-        # 方法2: 计数然后正向遍历
-        n = 0
-        cur = head
-        while cur:
-            n += 1
-            cur = cur.next
-        cur = head
-        for i in range(n - k):
-            cur = cur.next
-        return cur
-```
 方案 3
 思路
 - 回顾前两种方案, 要么使用了额外空间, 要么遍历了多次, 有没有一次遍历又不需要使用额外空间的方法呢?
@@ -67,21 +41,51 @@ class Solution:
   - 每个数字只需要被遍历一遍
 - 空间复杂度 `O(1)`
   - 只需要几个变量
-代码
-```python
-class Solution:
-    def getKthFromEnd(self, head: ListNode, k: int) -> ListNode:
-        # 双指针快慢节点
-        # 快指针先走k步, 然后慢指针再开始走, 这样能保证两者距离一直为k, 那么当快指针走到结尾时满指针就恰好停在倒数第k个节点
-        fast = head
-        for i in range(k):
-            if fast:
-                fast = fast.next
-        slow = head
-        while fast:
-            slow = slow.next
-            fast = fast.next
-        return slow
-```
----
- */
+*/
+#include "ListNode.h"
+
+class Solution
+{
+public:
+    ListNode* getKthFromEnd(ListNode* head, int k)
+    {
+        // 双指针快慢节点
+        // 快指针先走 k 步, 然后慢指针再开始走
+        // 保证两者距离一直为 k, 当快指针走到结尾时慢指针恰好停在倒数第 k 个节点
+        ListNode* fast = head;
+        for (int i = 0; i < k; i++)
+        {
+            if (fast)
+                fast = fast->next;
+        }
+        ListNode* slow = head;
+        while (fast)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        return slow;
+    }
+};
+
+int main()
+{
+    Solution s;
+
+    // 示例: 1->2->3->4->5, k=2, 期望输出 4->5
+    ListNode* head1 = createListNode({1, 2, 3, 4, 5});
+    ListNode* res1 = s.getKthFromEnd(head1, 2);
+    printListNode(res1);  // 4 -> 5
+
+    // 倒数第 1 个: 期望输出 5
+    ListNode* head2 = createListNode({1, 2, 3, 4, 5});
+    ListNode* res2 = s.getKthFromEnd(head2, 1);
+    printListNode(res2);  // 5
+
+    // 倒数第 k 等于链表长度: 期望返回 head
+    ListNode* head3 = createListNode({1, 2, 3});
+    ListNode* res3 = s.getKthFromEnd(head3, 3);
+    printListNode(res3);  // 1 -> 2 -> 3
+
+    return 0;
+}

@@ -21,3 +21,12 @@ public:
             inOrder(root->right, result);
     }
 };
+int main()
+{
+    // BST: [3,1,4,null,2], k=1 => 4
+    TreeNode *root = createBinaryTree({3, 1, 4, -1, 2});
+    Solution s;
+    cout << s.findTargetNode(root, 1) << endl; // 4
+    cout << s.findTargetNode(root, 2) << endl; // 3
+    return 0;
+}

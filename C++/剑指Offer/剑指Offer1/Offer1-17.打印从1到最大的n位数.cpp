@@ -27,34 +27,44 @@
   - 需要循环到 `10^N` 依次输出
 - 空间复杂度 `O(1)`
   - 只使用了几个变量
-代码
-方案 1 - 取上限的下一个数
+*/
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
 
-```python
-class Solution:
-    def printNumbers(self, n: int) -> List[int]:
-        return list(range(1, 10**n))
-```
-方案 2 - 利用字符串转换取上限数
-```python
-class Solution:
-    def printNumbers(self, n: int) -> List[int]:
-        mx = int("9" * n)
-        res = []
-        for i in range(1, mx + 1):
-            res.append(i)
-        return res
-```
-方案 3 - 利用循环求上限数
-```python
-class Solution:
-    def printNumbers(self, n: int) -> List[int]:
-        mx = 0
-        for i in range(n):
-            mx = mx * 10 + 9
-        res = []
-        for i in range(1, mx + 1):
-            res.append(i)
-        return res
-```
- */
+class Solution
+{
+public:
+    vector<int> printNumbers(int n)
+    {
+        int mx = (int)pow(10, n) - 1;
+        vector<int> res;
+        for (int i = 1; i <= mx; i++)
+        {
+            res.push_back(i);
+        }
+        return res;
+    }
+};
+
+int main()
+{
+    Solution s;
+
+    // 示例: n = 1 => [1,2,...,9]
+    vector<int> res1 = s.printNumbers(1);
+    cout << "n=1: [";
+    for (int i = 0; i < (int)res1.size(); i++)
+    {
+        if (i) cout << ",";
+        cout << res1[i];
+    }
+    cout << "]" << endl;
+
+    // 示例: n = 2 => [1,2,...,99]
+    vector<int> res2 = s.printNumbers(2);
+    cout << "n=2: size=" << res2.size() << ", last=" << res2.back() << endl;
+
+    return 0;
+}

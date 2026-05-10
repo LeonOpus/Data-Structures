@@ -4,7 +4,6 @@
 请实现一个函数用来判断字符串是否表示数值（包括整数和小数）。例如，字符串"+100"、"5e2"、"-123"、"3.1416"、"0123"都表示数值，但"12e"、"1a3.14"、"1.2.3"、"+-5"、"-1E-16"及"12e+5.4"都不是。
 题目样例
 示例
-```
 "0" => true
 " 0.1 " => true
 "abc" => false
@@ -19,7 +18,6 @@
 " --6 " => false
 "-+3" => false
 "95a54e53" => false
-```
 题目思考
 1. 如何高效地处理各类情况?
 2. 边界情况分为几类?
@@ -51,50 +49,89 @@
   - 只需要对每个字符判断一次
 - 空间复杂度 `O(1)`
   - 只使用了常数个变量
-代码
-```python
-class Solution:
-    def isNumber(self, s: str) -> bool:
-        # 先要把首尾空格去掉
-        # 然后判断是否有e
-        # 有的话分成左右两部分check, 左边可以有小数, 右边不能有
-        # 注意小数点可以位于任意位置..
-        # 注意e之后不能有小数点
-        # 注意每一部分判断时需要保证至少有一个数字
-        s = s.strip()
+*/
+#include <iostream>
+#include <string>
+using namespace std;
 
-        def isValid(s, allowdot):
-            hasNum = False
-            hasDot = False
-            for i, c in enumerate(s):
-                if c == '+' or c == '-':
-                    # 先判断符号, 如果不是在开头, 直接返回False
-                    if i != 0:
-                        return False
-                elif c == '.':
-                    if not allowdot:
-                        # 当前不能有小数点, 返回False
-                        return False
-                    if hasDot:
-                        # 已经有一个小数点了, 返回False
-                        return False
-                    hasDot = True
-                elif c.isnumeric():
-                    # 注意这里至少需要满足有一个数字
-                    hasNum = True
-                else:
-                    # 其他字符都不满足, 直接返回False (包括e, 因为e只允许有一个, 有的话已经作为分隔符用掉了)
-                    return False
-            return hasNum
+class Solution
+{
+public:
+    bool isNumber(string s)
+    {
+        // 去除首尾空格
+        int left = 0, right = (int)s.size() - 1;
+        while (left <= right && s[left] == ' ') left++;
+        while (right >= left && s[right] == ' ') right--;
+        if (left > right) return false;
+        s = s.substr(left, right - left + 1);
 
-        e = s.find('e')
-        if e == -1:
-            # 当前字符串没有e, 直接判断整体即可, 也允许小数点
-            return isValid(s, True)
-        else:
-            # 分为左右部分分别判断, 左边可以有小数点, 右边不行
-            return isValid(s[0:e], True) and isValid(s[e + 1:], False)
-```
+        // isValid: 判断子串是否是合法数字, allowDot 表示是否允许小数点
+        auto isValid = [](const string& t, bool allowDot) -> bool
+        {
+            bool hasNum = false;
+            bool hasDot = false;
+            for (int i = 0; i < (int)t.size(); i++)
+            {
+                char c = t[i];
+                if (c == '+' || c == '-')
+                {
+                    // 符号只能出现在开头
+                    if (i != 0) return false;
+                }
+                else if (c == '.')
+                {
+                    if (!allowDot) return false;
+                    if (hasDot) return false;
+                    hasDot = true;
+                }
+                else if (c >= '0' && c <= '9')
+                {
+                    hasNum = true;
+                }
+                else
+                {
+                    // 其他字符均非法
+                    return false;
+                }
+            }
+            return hasNum;
+        };
 
----
- */
+        // 查找 'e' 的位置
+        size_t ePos = s.find('e');
+        if (ePos == string::npos)
+        {
+            // 没有 e, 直接判断整体, 允许小数点
+            return isValid(s, true);
+        }
+        else
+        {
+            // 按 e 分左右, 左边可以有小数点, 右边不行
+            string leftPart = s.substr(0, ePos);
+            string rightPart = s.substr(ePos + 1);
+            return isValid(leftPart, true) && isValid(rightPart, false);
+        }
+    }
+};
+
+int main()
+{
+    Solution sol;
+    cout << boolalpha;
+    cout << sol.isNumber("0") << endl;           // true
+    cout << sol.isNumber(" 0.1 ") << endl;       // true
+    cout << sol.isNumber("abc") << endl;         // false
+    cout << sol.isNumber("1 a") << endl;         // false
+    cout << sol.isNumber("2e10") << endl;        // true
+    cout << sol.isNumber(" -90e3   ") << endl;   // true
+    cout << sol.isNumber(" 1e") << endl;         // false
+    cout << sol.isNumber("e3") << endl;          // false
+    cout << sol.isNumber(" 6e-1") << endl;       // true
+    cout << sol.isNumber(" 99e2.5 ") << endl;    // false
+    cout << sol.isNumber("53.5e93") << endl;     // true
+    cout << sol.isNumber(" --6 ") << endl;       // false
+    cout << sol.isNumber("-+3") << endl;         // false
+    cout << sol.isNumber("95a54e53") << endl;    // false
+    return 0;
+}

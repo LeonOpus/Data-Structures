@@ -3,7 +3,7 @@
 [原题链接](https://leetcode-cn.com/problems/yong-liang-ge-zhan-shi-xian-dui-lie-lcof/)
 题目描述
 用两个栈实现一个队列。队列的声明如下，请实现它的两个函数 `appendTail` 和 `deleteHead` ，
-分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，`deleteHead`  操作返回 -1 )
+分别完成在队列尾部插入整数和在队列头部删除整数的功能。(若队列中没有元素，`deleteHead`  操作返回 -1 )
 - 1 <= values <= 10000
 - 最多会对 `appendTail`、`deleteHead` 进行 10000 次调用
 题目样示例 1
@@ -63,45 +63,58 @@
    3. 显然压入 `O(N)`, 弹出 `O(1)`
 */
 
+#include <iostream>
 #include <stack>
 using namespace std;
+
 class CQueue
 {
 public:
-  // 栈是先进后出   1,2,3,4
-  // 队列是先进先出 1,2,3,4
-  // 所以用栈模拟队列，即是要取栈的先进的元素(1)，它是在栈底部
-  stack<int> stack_in;
-  stack<int> stack_out;
+    stack<int> s1;
+    stack<int> s2;
 
-  CQueue()
-  {
-  }
-
-  void appendTail(int value)
-  {
-    stack_in.push(value);
-  }
-
-  int deleteHead()
-  {
-    if (stack_in.empty() && stack_out.empty())
+    CQueue()
     {
-      return -1;
     }
-    int result;
-    if (stack_out.empty())
+
+    void appendTail(int value)
     {
-      while (!stack_in.empty())
-      {
-        int element = stack_in.top();
-        stack_out.push(element);
-        stack_in.pop();
-      }
+        s1.push(value);
     }
-    int element = stack_out.top();
-    result = element;
-    stack_out.pop();
-    return result;
-  }
+
+    int deleteHead()
+    {
+        if (s1.empty() && s2.empty())
+        {
+            return -1;
+        }
+        if (s2.empty())
+        {
+            while (!s1.empty())
+            {
+                s2.push(s1.top());
+                s1.pop();
+            }
+        }
+        int result = s2.top();
+        s2.pop();
+        return result;
+    }
 };
+
+int main()
+{
+    CQueue cqueue;
+    cqueue.appendTail(3);
+    cout << cqueue.deleteHead() << endl; // 3
+    cout << cqueue.deleteHead() << endl; // -1
+
+    CQueue cqueue2;
+    cout << cqueue2.deleteHead() << endl; // -1
+    cqueue2.appendTail(5);
+    cqueue2.appendTail(2);
+    cout << cqueue2.deleteHead() << endl; // 5
+    cout << cqueue2.deleteHead() << endl; // 2
+
+    return 0;
+}

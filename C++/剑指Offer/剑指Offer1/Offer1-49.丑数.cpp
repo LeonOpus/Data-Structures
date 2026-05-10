@@ -2,31 +2,31 @@
 
 > [原题链接](https://leetcode-cn.com/problems/chou-shu-lcof/)
 
-## 题目描述
+题目描述
 
 我们把只包含质因子 2、3 和 5 的数称作丑数（Ugly Number）。求按从小到大的顺序的第 n 个丑数。
 
 - 1 是丑数。
 - n 不超过 1690。
 
-## 题目样例
+题目样例
 
-### 示例
+示例
 
 - 输入: n = 10
 - 输出: 12
 - 解释: 1, 2, 3, 4, 5, 6, 8, 9, 10, 12 是前 10 个丑数。
 
-## 题目思考
+题目思考
 
 1. 如何从当前的丑数得到后面的丑数?
 2. 如何保证从小到大?
 
-## 解决方案
+解决方案
 
-### 方案 1
+方案 1
 
-#### 思路
+思路
 
 - 一个比较容易想到的思路是使用一个小顶堆, 每次从堆顶 pop 出当前最小的丑数, 然后乘以 2/3/5 得到新丑数, 如果新丑数没有在堆中的话, 就将其加入堆中
 - 这样 pop n 次即为第 n 个丑数
@@ -34,33 +34,14 @@
 - 显然初始化堆和集合中的元素都是 1, 代表第 1 个丑数
 - 以上的操作是不是很类似 BFS 的思路? 不同的是这里利用了堆而不是双端队列/列表来处理当前的元素, 所以举一反三很重要
 
-#### 复杂度
+复杂度
 
 - 时间复杂度 O(NlogN): 共需要 N 次堆操作, 每次堆操作的时间复杂度是 logN
 - 空间复杂度 O(N): 使用了一个小顶堆和一个集合
 
-#### 代码
+方案 2
 
-```python
-class Solution:
-    def nthUglyNumber(self, n: int) -> int:
-        # 初始化集合和堆中元素都为1
-        v = {1}
-        q = [1]
-        for i in range(n):
-            res = heapq.heappop(q)
-            for factor in (2, 3, 5):
-                nex = res * factor
-                if nex not in v:
-                    # 新丑数没在堆里的话, 将其加入堆中
-                    v.add(nex)
-                    heapq.heappush(q, nex)
-        return res
-```
-
-### 方案 2
-
-#### 思路
+思路
 
 - 回顾方案 1, 因为引入了堆, 所以时间复杂度达到了 O(NlogN), 那有没有更优的方案呢, 比如 O(N) 时间复杂度?
 - 答案也是有的, 我们重新分析题目, 要求数字的质因子只有 2/3/5, 我们就可以把当前丑数乘以 2/3/5 的数字分别存入三个数组中, 并将 1 作为第 1 个值, 这样就可以将题目转换成将**三个有序数组进行合并去重后求第 n 个最小值**
@@ -71,39 +52,45 @@ class Solution:
 - **需要保存哪些数组呢?** 注意 arr2/arr3/arr5 有个共同特点是作为因子的丑数序列是相同的, 都是`[1,2,3,4,5,6,8,...]`, 只是需要乘的质因子不同. 所以我们并没有必要真正保存 3 个数组, 而只需要保存升序丑数序列即可, 这样恰好该序列的第 n 个数就是最终结果. **而 arr2/arr3/arr5 只需要在该丑数序列基础上乘以 2/3/5 即可得到**, 然后三个数组的指针移动还和上面的分析一样
 - 下面的代码对必要步骤有详细的注释, 方便大家理解
 
-#### 复杂度
+复杂度
 
 - 时间复杂度 O(N): 只需要遍历一遍
 - 空间复杂度 O(N): 额外使用了一个数组存升序丑数序列
+*/
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-#### 代码
+class Solution
+{
+public:
+    int nthUglyNumber(int n)
+    {
+        // 初始化丑数序列第一个元素为 1
+        vector<int> ugly(n);
+        ugly[0] = 1;
+        // 三个指针分别对应乘以 2/3/5 的候选位置
+        int i2 = 0, i3 = 0, i5 = 0;
+        for (int i = 1; i < n; i++)
+        {
+            int next = min({ugly[i2] * 2, ugly[i3] * 3, ugly[i5] * 5});
+            ugly[i] = next;
+            // 哪个候选生成了最小值就将对应指针后移 (可能同时移动多个)
+            if (next == ugly[i2] * 2) i2++;
+            if (next == ugly[i3] * 3) i3++;
+            if (next == ugly[i5] * 5) i5++;
+        }
+        return ugly[n - 1];
+    }
+};
 
-```python
-class Solution:
-    def nthUglyNumber(self, n: int) -> int:
-        # 初始化丑数序列第一个元素为1
-        ugly = [1]
-        # 初始化arr2/arr3/arr5的下标都为0
-        i2, i3, i5 = 0, 0, 0
-        while len(ugly) < n:
-            # 取arr2/arr3/arr5三者中的最小值追加到当前升序丑数序列中
-            # 根据下面三个if判断的逻辑, 新追加的值一定大于之前丑数序列的最大值(最后一个值), 因为之前的最大值若等同于arr2/arr3/arr5的下标对应的值的话, 会将下标+1的, 新下标的值一定大于原下标的
-            ugly.append(min(
-                2 * ugly[i2],
-                3 * ugly[i3],
-                5 * ugly[i5],
-            ))
-            if ugly[-1] == 2 * ugly[i2]:
-                # 最小值和arr2下标的值*2一样, i2加1
-                i2 += 1
-            if ugly[-1] == 3 * ugly[i3]:
-                # 同上
-                i3 += 1
-            if ugly[-1] == 5 * ugly[i5]:
-                # 同上
-                i5 += 1
-        return ugly[-1]
-```
-
----
- */
+int main()
+{
+    Solution sol;
+    cout << sol.nthUglyNumber(1) << endl;   // 1
+    cout << sol.nthUglyNumber(10) << endl;  // 12
+    cout << sol.nthUglyNumber(11) << endl;  // 15
+    cout << sol.nthUglyNumber(15) << endl;  // 24
+    return 0;
+}

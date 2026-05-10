@@ -31,29 +31,6 @@
 - 空间复杂度 `O(1)`
   - 只需要常数个变量
 
-代码
-
-```python
-class Solution:
-    def reverseList(self, head: ListNode) -> ListNode:
-#方法1 : 迭代, 双指针
-        if not head:
-#链表为空的话直接返回空
-            return head
-        pre, cur = head, head.next
-#首先head变成了翻转后的末尾, 所以其next要置为空
-        head.next = None
-        while cur:
-#先存下cur的下一个节点
-            nex = cur.next
-#cur的下一个节点指向pre, 完成当前节点指向的反转
-            cur.next = pre
-#更新pre和cur, 分别按照原链表顺序往后移动一位
-            pre, cur = cur, nex
-#最终cur就是空, 而pre则是反转后的开头节点
-        return pre
-```
-
 方案 2
 
 思路
@@ -69,30 +46,6 @@ class Solution:
 - 空间复杂度 `O(N)`
   - 递归的栈的消耗
 
-代码
-
-```python
-class Solution:
-    def reverseList(self, head: ListNode) -> ListNode:
-#方法2 : 递归版本1 - 返回反转后的头和尾
-        def reverse(head):
-            if not head:
-#空节点, 反转后的头和尾仍为空
-                return (None, None)
-            if not head.next:
-#只有单独一个节点, 反转后的头和尾仍为自身
-                return (head, head)
-            nextHead, nextTail = reverse(head.next)
-#将nextTail指向head, head指向空即可
-            head.next = None
-            nextTail.next = head
-#新的链表头仍为原来的nextHead, 尾则变了, 变成head
-            return (nextHead, head)
-
-#最后返回反转链表的头即可
-        return reverse(head)[0]
-```
-
 方案 3
 
 思路
@@ -107,23 +60,53 @@ class Solution:
   - 每个节点只需要访问一次
 - 空间复杂度 `O(N)`
   - 递归的栈的消耗
+*/
+#include "ListNode.h"
 
-代码
+class Solution
+{
+public:
+    ListNode* reverseList(ListNode* head)
+    {
+        // 方法 1: 迭代, 双指针
+        if (!head)
+            return head;
+        ListNode* pre = head;
+        ListNode* cur = head->next;
+        // head 变成了翻转后的末尾, 所以其 next 要置为空
+        head->next = nullptr;
+        while (cur)
+        {
+            // 先存下 cur 的下一个节点
+            ListNode* nex = cur->next;
+            // cur 的下一个节点指向 pre, 完成当前节点指向的反转
+            cur->next = pre;
+            // 更新 pre 和 cur, 分别按照原链表顺序往后移动一位
+            pre = cur;
+            cur = nex;
+        }
+        // 最终 cur 就是空, 而 pre 则是反转后的开头节点
+        return pre;
+    }
+};
 
-```python
-class Solution:
-    def reverseList(self, head: ListNode) -> ListNode:
-方法3 : 递归版本2 - 只需要返回反转后的链表头
-        if not head or not head.next:
-#空节点或者只有自身一个节点, 直接返回自身即可
-            return head
-        nextHead = self.reverseList(head.next)
-#head.next就是方法2的nextTail
-        head.next.next = head
-#注意此处必须先反转指向, 再将head.next置为空
-        head.next = None
-#新的链表头仍为原来的nextHead
-        return nextHead
-```
----
- */
+int main()
+{
+    Solution s;
+
+    // 示例: 1->2->3->4->5->NULL, 期望输出 5->4->3->2->1->NULL
+    ListNode* head1 = createListNode({1, 2, 3, 4, 5});
+    ListNode* res1 = s.reverseList(head1);
+    printListNode(res1);  // 5 -> 4 -> 3 -> 2 -> 1
+
+    // 空链表
+    ListNode* res2 = s.reverseList(nullptr);
+    printListNode(res2);  // (empty)
+
+    // 单节点
+    ListNode* head3 = createListNode({1});
+    ListNode* res3 = s.reverseList(head3);
+    printListNode(res3);  // 1
+
+    return 0;
+}

@@ -1,8 +1,9 @@
+/*
 > 题目难度: 简单
 
 > [原题链接](https://leetcode-cn.com/problems/nge-tou-zi-de-dian-shu-lcof/)
 
-## 题目描述
+题目描述
 
 把 n 个骰子扔在地上，所有骰子朝上一面的点数之和为 s。输入 n，打印出 s 的所有可能的值出现的概率。
 
@@ -10,9 +11,9 @@
 
 - 1 <= n <= 11
 
-## 题目样例
+题目样例
 
-### 示例
+示例
 
 - 输入: 1
 - 输出: [0.16667,0.16667,0.16667,0.16667,0.16667,0.16667]
@@ -20,13 +21,13 @@
 - 输入: 2
 - 输出: [0.02778,0.05556,0.08333,0.11111,0.13889,0.16667,0.13889,0.11111,0.08333,0.05556,0.02778]
 
-## 题目思考
+题目思考
 
 1. 可以根据 n 个骰子的概率推导出 n+1 个骰子的概率吗
 
-## 解决方案
+解决方案
 
-#### 思路
+思路
 
 - 分析题目, 先从 1 个骰子的最简单情况出发, 显然点数为 1~6 的概率都是 1/6
 - 那如果是 2 个骰子呢? 假设第一个骰子点数为 1, 第二个可以是 1~6, 两者之和就是 2~7; 而如果第一个点数为 2, 那么两者之和就是 3~8, 以此类推
@@ -36,40 +37,45 @@
 - 对于 n 个骰子而言, 其点数之和最小为 n (每个骰子点数都是 1), 最大为 `6*n` (每个骰子点数都是 6)
 - 下面代码对必要的步骤有详细的解释, 方便大家理解
 
-#### 复杂度
+复杂度
 
 - 时间复杂度 O(N^2): 两层循环, 外层遍历 N 个数, 内层遍历 `5N*6` 个数
 - 空间复杂度 O(N): 字典中需要存 5N 个键值对
 
-#### 代码
-
-```python {cmd="python3"}
-import collections
-from typing import List
-class Solution:
-    def twoSum(self, n: int) -> List[float]:
-        # DP, dp为当前的点数和=>概率的字典, 初始化dp[0] = 1, 代表0个骰子时点数之和为0的概率为1
-        # 增加一个骰子后, 我们只需要对原来字典的每个点数之和加上 1~6 作为新的点数之和, 并将原有概率乘以 1/6 累加到新的点数和对应的概率上即可
-        dp = {}
-        dp[0] = 1
-        for i in range(1, n + 1):
-            newdp = collections.defaultdict(int)
-            for sm in dp:
-                for v in range(1, 7):
-                    # 增加一个骰子后, 累加其概率到新的点数和上
-                    newdp[sm + v] += dp[sm] / 6
-            dp = newdp
-        res = []
-        for sm in range(n, 6 * n + 1):
-            # 将值依次存入结果中
-            res.append(dp[sm])
-        return res
-# 测试用例
-print(Solution().twoSum(1))
-print(Solution().twoSum(2))
-
-
-```
-
 ---
+*/
+#include <iostream>
+#include <vector>
+using namespace std;
 
+class Solution {
+public:
+    vector<double> twoSum(int n) {
+        // dp[s] = probability that sum is s with current number of dice
+        vector<double> dp(6 * n + 1, 0);
+        // init: 1 die
+        for (int v = 1; v <= 6; v++) dp[v] = 1.0 / 6;
+        for (int i = 2; i <= n; i++) {
+            vector<double> ndp(6 * n + 1, 0);
+            for (int s = i - 1; s <= 6 * (i - 1); s++) {
+                if (dp[s] == 0) continue;
+                for (int v = 1; v <= 6; v++) ndp[s + v] += dp[s] / 6;
+            }
+            dp = ndp;
+        }
+        vector<double> res;
+        for (int s = n; s <= 6 * n; s++) res.push_back(dp[s]);
+        return res;
+    }
+};
+
+int main() {
+    Solution s;
+    auto res = s.twoSum(1);
+    for (double x : res) cout << x << " ";
+    cout << endl;
+    res = s.twoSum(2);
+    for (double x : res) cout << x << " ";
+    cout << endl;
+    return 0;
+}

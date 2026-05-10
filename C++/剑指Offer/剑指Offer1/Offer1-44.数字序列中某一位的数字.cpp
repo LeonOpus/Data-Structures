@@ -1,33 +1,24 @@
 /* > 题目难度: 中等
-
 > [原题链接](https://leetcode-cn.com/problems/shu-zi-xu-lie-zhong-mou-yi-wei-de-shu-zi-lcof/)
-
-## 题目描述
-
-数字以 0123456789101112131415…的格式序列化到一个字符序列中。在这个序列中，第 5 位（从下标 0 开始计数）是 5，第 13 位是 1，第 19 位是 4，等等。
-
+题目描述
+数字以 0123456789101112131415…的格式序列化到一个字符序列中。
+在这个序列中，第 5 位（从下标 0 开始计数）是 5，第 13 位是 1，第 19 位是 4，等等。
 请写一个函数，求任意第 n 位对应的数字。
-
 - 0 <= n < 2^31
-
-## 题目样例
-
-### 示例
-
+题目样例
+示例
 - 输入：n = 3
 - 输出：3
 
 - 输入：n = 11
 - 输出：0
-
-## 题目思考
+题目思考
 
 1. 能否找到什么规律?
 
-## 解决方案
+解决方案
 
-### 思路
-
+思路
 - 观察序列本身:
   - 0~9 只占 1 位, 共 10 个
   - 10~99 占 2 位, 共 90 个
@@ -43,41 +34,75 @@
 - 假设 le 位数下的字符总数是 cnt, le+1 下的字符总数是 nextcnt, 那么如果 n 在`[cnt, nextcnt)`范围内, 那就说明 n 落在的数字一定有 le 位
 - 这样一来, 我们只需要定位 n 具体对应到的数字, 以及所在数字的第几位即可
 - 而由于每个数字占有 le 位, 所以 n 对应的数字就是 `start+(n-cnt)/le`, 而具体 n 是在该数字的第几位, 则是`(n-cnt)%le`
-- 下面的代码对必要步骤有详细的解释, 方便大家理解
 
-### 复杂度
+复杂度
 
 - 时间复杂度 `O(logN)`
   - 只需要按位数遍历即可, n 的位数是 logN
 - 空间复杂度 `O(1)`
   - 只使用了常数个变量
+*/
+#include <iostream>
+#include <string>
+using namespace std;
 
-### 代码
+class Solution
+{
+public:
+    int findNthDigit(int n)
+    {
+        if (n == 0)
+            return 0;
 
-```python
-class Solution:
-    def findNthDigit(self, n: int) -> int:
-        if n == 0:
-            return 0
-        # 初始化计数值为1, 因为start最开始是1, 此时已经有1个字符了
-        cnt = 1
-        # 初始化位数为1位
-        le = 1
-        while n >= cnt:
-            # 求当前位数下的start
-            start = 10**(le - 1)
-            # 求当前位数+1情况下的字符总数
-            nexcnt = cnt + 9 * start * le
-            if n <= nexcnt:
-                # 当前n落在范围内, 找对应的数字和该数字中n对应的位(偏移量)
-                i, offset = divmod(n - cnt, le)
-                num = start + i
-                # 将数字转成字符串, 其偏移量下标对应的位即为所求
-                return int(str(num)[offset])
-            # 更新字符总数, 同时位数加1, 继续循环
-            cnt = nexcnt
-            le += 1
-```
+        // 初始化计数值为1, 因为start最开始是1, 此时已经有1个字符了
+        long long cnt = 1;
+        // 初始化位数为1位
+        int le = 1;
 
----
- */
+        while ((long long)n >= cnt)
+        {
+            // 求当前位数下的start
+            long long start = 1;
+            for (int k = 0; k < le - 1; k++)
+                start *= 10;
+
+            // 求当前位数+1情况下的字符总数
+            long long nexcnt = cnt + 9LL * start * le;
+
+            if ((long long)n <= nexcnt)
+            {
+                // 当前n落在范围内, 找对应的数字和该数字中n对应的位(偏移量)
+                long long diff = (long long)n - cnt;
+                long long i = diff / le;
+                int offset = (int)(diff % le);
+                long long num = start + i;
+                // 将数字转成字符串, 其偏移量下标对应的位即为所求
+                string numStr = to_string(num);
+                return numStr[offset] - '0';
+            }
+            // 更新字符总数, 同时位数加1, 继续循环
+            cnt = nexcnt;
+            le++;
+        }
+        return -1;
+    }
+};
+
+int main()
+{
+    Solution s;
+
+    // 示例: n = 3 => 3
+    cout << "n=3 => " << s.findNthDigit(3) << endl;
+
+    // 示例: n = 11 => 0   (序列: 0123456789 10 11... 第11位是10中的0)
+    cout << "n=11 => " << s.findNthDigit(11) << endl;
+
+    // 示例: n = 0 => 0
+    cout << "n=0 => " << s.findNthDigit(0) << endl;
+
+    // 示例: n = 19 => 4  (序列第19位是14中的4)
+    cout << "n=19 => " << s.findNthDigit(19) << endl;
+
+    return 0;
+}

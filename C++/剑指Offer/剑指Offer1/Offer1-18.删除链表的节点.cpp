@@ -35,13 +35,57 @@ head = [4,5,1,9], val = 5
   - 最差情况需要遍历整个链表的所有节点
 - 空间复杂度 `O(1)`
   - 只使用了几个变量
-代码
-方案 1 - 特殊处理 head
-方案 2 - 增加哨兵节点
-```
 思考题答案
 1. 进阶问题: 如果节点的值存在重复需要怎么做?
    1. 对方案 2 稍加改造即可: 找到删除节点后不跳出循环, 而是在更新 `pre` 的 `next` 之后, **保持 pre 不变** (因为有可能存在连续多个待删除节点, 这样保持 `pre` 不变才能将其指向要一个不会被删除的节点), 而将 `cur` 继续后移; 而没找到时再移动 `pre` 和 `cur`
    2. 由于两个条件都需要后移`cur`, 所以可以将其提取到 if 条件之外, 简化代码
-   3. 这道题也即[203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/), 具体代码如下:
- */
+   3. 这道题也即[203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/)
+*/
+#include "ListNode.h"
+
+class Solution
+{
+public:
+    ListNode* deleteNode(ListNode* head, int val)
+    {
+        // 特殊处理 head 节点
+        if (head->val == val)
+            return head->next;
+        // 否则 pre 从 head 出发, cur 从 head->next 出发
+        ListNode* pre = head;
+        ListNode* cur = head->next;
+        while (cur)
+        {
+            if (cur->val == val)
+            {
+                pre->next = cur->next;
+                break;
+            }
+            pre = cur;
+            cur = cur->next;
+        }
+        return head;
+    }
+};
+
+int main()
+{
+    Solution s;
+
+    // 示例: head = [4,5,1,9], val = 5, 期望输出 [4,1,9]
+    ListNode* head1 = createListNode({4, 5, 1, 9});
+    ListNode* res1 = s.deleteNode(head1, 5);
+    printListNode(res1);  // 4 -> 1 -> 9
+
+    // 删除头节点: head = [1,2,3], val = 1, 期望输出 [2,3]
+    ListNode* head2 = createListNode({1, 2, 3});
+    ListNode* res2 = s.deleteNode(head2, 1);
+    printListNode(res2);  // 2 -> 3
+
+    // 删除尾节点: head = [1,2,3], val = 3, 期望输出 [1,2]
+    ListNode* head3 = createListNode({1, 2, 3});
+    ListNode* res3 = s.deleteNode(head3, 3);
+    printListNode(res3);  // 1 -> 2
+
+    return 0;
+}

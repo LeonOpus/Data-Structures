@@ -26,3 +26,16 @@ public:
         return root;
     }
 };
+int main()
+{
+    // [3,5,1,6,2,0,8,null,null,7,4], p=5, q=1 => 3
+    TreeNode *root = createBinaryTree({3, 5, 1, 6, 2, 0, 8, -1, -1, 7, 4});
+    TreeNode *p = root->left;  // 5
+    TreeNode *q = root->right; // 1
+    Solution s;
+    cout << s.lowestCommonAncestor(root, p, q)->val << endl; // 3
+    // p=5, q=4 => 5
+    TreeNode *q2 = root->left->right->right;                  // 4
+    cout << s.lowestCommonAncestor(root, p, q2)->val << endl; // 5
+    return 0;
+}

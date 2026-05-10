@@ -2,28 +2,28 @@
 
 > [原题链接](https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/)
 
-## 题目描述
+题目描述
 
 请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。
 
 - s.length <= 40000
 
-## 题目样例
+题目样例
 
-### 示例
+示例
 
 - 输入: "pwwkew"
 - 输出: 3
-- 解释: 因为无重复字符的最长子串是  "wke"，所以其长度为 3。请注意，你的答案必须是 子串 的长度，"pwke"  是一个子序列，不是子串。
+- 解释: 因为无重复字符的最长子串是  "wke"，所以其长度为 3。请注意，你的答案必须是 子串 的长度，"pwke"  是一个子序列，不是子串。
 
-## 题目思考
+题目思考
 
 1. 如何通过一次遍历得出结果?
 2. 如果统计当前子字符串的字符种类?
 
-## 解决方案
+解决方案
 
-### 思路
+思路
 
 - 分析题目, 一个最简单的思路就是暴力法: 固定子字符串起点, 然后往后扩展, **因为不能含有重复, 所以可以使用集合统计当前子字符串的字符种类**, 直到发现重复字符或者到终点停止, 取最长的子字符串作为结果. 但这样需要两重遍历, 时间复杂度达到 `O(N*C)` (C 是字符的种类数目, 因为找到重复就会停下来, 所以不是 N^2), 不是很优
 - 基于暴力法进行分析, 假设当前子字符串起点是 start, 发现重复字符的位置是 end, 然后对应的该字符上个下标是 dup, 显然`start <= dup < end`
@@ -33,36 +33,47 @@
 - 以上就是典型的滑动窗口的思想, 通常做法就是维护双指针代表窗口起点和终点, 然后根据当前窗口是否满足要求来进行不同的处理
 - 下面的代码对必要步骤有详细的解释, 方便大家理解
 
-### 复杂度
+复杂度
 
 - 时间复杂度 O(N): 起点和终点都只需要遍历一遍
 - 空间复杂度 O(1): 只使用了几个变量
+*/
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
 
-### 代码
+class Solution
+{
+public:
+    int lengthOfLongestSubstring(string s)
+    {
+        // 滑动窗口, 用 map 记录字符最近出现的位置
+        unordered_map<char, int> lastPos;
+        int start = 0, res = 0;
+        for (int end = 0; end < (int)s.size(); end++)
+        {
+            char c = s[end];
+            if (lastPos.count(c) && lastPos[c] >= start)
+            {
+                // 发现重复字符, 将起点移到重复字符上次位置的下一个
+                start = lastPos[c] + 1;
+            }
+            lastPos[c] = end;
+            res = max(res, end - start + 1);
+        }
+        return res;
+    }
+};
 
-```python
-class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-#滑动窗口 + 当前字符集合, 时刻更新res
-        start = 0
-        res = 0
-        v = set()
-        for end in range(len(s)):
-            c = s[end]
-            if c in v:
-#发现重复了, start向后遍历找dup下标(即上一个c的下标)
-                while start < end and s[start] != c:
-                    v.remove(s[start])
-                    start += 1
-#此时dup = start, 需要将dup + 1作为新的起点
-                start += 1
-            else:
-#没有重复, 将当前字符加入字符集合中
-                v.add(c)
-#最大子字符串长度就是最大的字符集合的长度, 当然此处也可以用end - start + 1代替
-                res = max(res, len(v))
-        return res
-```
-
----
- */
+int main()
+{
+    Solution sol;
+    cout << sol.lengthOfLongestSubstring("pwwkew") << endl;   // 3
+    cout << sol.lengthOfLongestSubstring("abcabcbb") << endl; // 3
+    cout << sol.lengthOfLongestSubstring("bbbbb") << endl;    // 1
+    cout << sol.lengthOfLongestSubstring("") << endl;         // 0
+    cout << sol.lengthOfLongestSubstring("abcdef") << endl;   // 6
+    return 0;
+}

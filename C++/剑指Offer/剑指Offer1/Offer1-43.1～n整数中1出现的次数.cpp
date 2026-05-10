@@ -2,7 +2,7 @@
 
 > [原题链接](https://leetcode-cn.com/problems/1nzheng-shu-zhong-1chu-xian-de-ci-shu-lcof/)
 
-## 题目描述
+题目描述
 
 输入一个整数 n ，求 1 ～ n 这 n 个整数的十进制表示中 1 出现的次数。
 
@@ -10,9 +10,9 @@
 
 - 1 <= n < 2^31
 
-## 题目样例
+题目样例
 
-### 示例
+示例
 
 - 输入：n = 12
 - 输出：5
@@ -20,13 +20,13 @@
 - 输入：n = 13
 - 输出：6
 
-## 题目思考
+题目思考
 
 1. 可否单独统计每一位上的 1?
 
-## 解决方案
+解决方案
 
-### 思路
+思路
 
 - 一个最简单的思路是从 1 到 n 依次遍历, 然后统计各个数字的 1 的数目并累加, 但观察题目数据规模, 最大都到了 2^31, 这个做法肯定会超时
 - 换个思路, 如果我们可以单独统计每一位上的 1 在多少个数中存在, 这样只需要遍历所有位数并累加结果即可
@@ -36,43 +36,72 @@
   - `x > 1`: 此时仍包含第一种情况中的可能性, 但对于前两位是 12 来说, 后面的取值范围就是 0~99 了, 因为`12199 < 12x45`, 所以加起来就是`12*100 + 1*100`个 1
 - 综合这三种情况, 就能够计算出每一位上的 1 的数目, 最后累加起来就是总的 1 的数目
 - 注意 `x < 1` 的数目是所有情况下共享的, 所以可以先计算出这一部分, 然后针对 `x = 1` 和 `x > 1` 再额外计算剩余部分, 从而减少代码冗余
-- 下面的代码对必要步骤有详细的解释, 方便大家理解
 
-### 复杂度
+复杂度
 
 - 时间复杂度 `O(logN)`
   - 只需要遍历 n 的每一位, 总位数是 logN
 - 空间复杂度 `O(1)`
   - 不需要额外空间
+*/
+#include <iostream>
+#include <string>
+using namespace std;
 
-### 代码
+class Solution
+{
+public:
+    int countDigitOne(int n)
+    {
+        // 对每一位进行判断, 左右相乘, 分大于等于小于1三种情况
+        long long res = 0;
+        // 将数字先转成字符串, 方便对每一位的处理
+        string s = to_string(n);
+        int len = (int)s.size();
+        for (int i = 0; i < len; i++)
+        {
+            char x = s[i];
+            // 对应x<1时的左边部分的取值范围
+            // 注意对于最高位而言, 它的左边部分为0, 这是因为最高位不可能小于1, 所以这部分不应该有
+            long long left = (i == 0) ? 0 : stoll(s.substr(0, i));
+            // 对应x<1时的右边部分的取值范围
+            long long right = 1;
+            for (int k = 0; k < len - i - 1; k++)
+                right *= 10;
 
-```python
-class Solution:
-    def countDigitOne(self, n: int) -> int:
-        # 对每一位进行判断, 左右相乘, 分大于等于小于1三种情况
-        res = 0
-        # 将数字先转成字符串, 方便对每一位的处理
-        s = str(n)
-        for i, x in enumerate(s):
-            # 对应x<1时的左边部分的取值范围
-            # 注意对于最高位而言, 它的左边部分为0, 这是因为最高位不可能小于1, 所以这部分不应该有
-            left = 0 if i == 0 else int(s[0:i])
-            # 对应x<1时的右边部分的取值范围
-            right = 10**(len(s) - i - 1)
-            if x < '1':
-                # 当x<1时, 直接加上分析的左右部分乘积即可
-                res += left * right
-            elif x == '1':
-                # 当x=1时, 需要额外加上右边的计数, 对于例子12x45 (x=1)来说, 就是46
-                # 注意如果此时是最低位, 那么额外只有1种可能, 就是上限n本身, 所以最低位1的话只需要加上1
-                extra = 1 if i == len(s) - 1 else int(s[i + 1:]) + 1
-                res += left * right + extra
-            else:
-                # 当x>1时, 需要额外加上1*right
-                res += (left + 1) * right
-        return res
-```
+            if (x < '1')
+            {
+                // 当x<1时, 直接加上分析的左右部分乘积即可
+                res += left * right;
+            }
+            else if (x == '1')
+            {
+                // 当x=1时, 需要额外加上右边的计数
+                long long extra = (i == len - 1) ? 1 : stoll(s.substr(i + 1)) + 1;
+                res += left * right + extra;
+            }
+            else
+            {
+                // 当x>1时, 需要额外加上1*right
+                res += (left + 1) * right;
+            }
+        }
+        return (int)res;
+    }
+};
 
----
- */
+int main()
+{
+    Solution s;
+
+    // 示例: n = 12 => 5
+    cout << "n=12 => " << s.countDigitOne(12) << endl;
+
+    // 示例: n = 13 => 6
+    cout << "n=13 => " << s.countDigitOne(13) << endl;
+
+    // 示例: n = 100 => 21
+    cout << "n=100 => " << s.countDigitOne(100) << endl;
+
+    return 0;
+}
