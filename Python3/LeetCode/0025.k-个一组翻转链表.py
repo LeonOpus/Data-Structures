@@ -57,6 +57,7 @@ class Solution:
         if count == k:
             cur = self.reverseKGroup(cur, k)
             while count > 0:
+                assert head is not None
                 head_next = head.next
                 head.next = cur
                 cur = head

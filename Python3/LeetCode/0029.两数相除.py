@@ -62,5 +62,4 @@ class Solution:
             return -1
         return result
 
-
 # @lc code=end
