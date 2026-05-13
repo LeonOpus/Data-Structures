@@ -1,10 +1,26 @@
-#
 # @lc app=leetcode.cn id=14 lang=python3
-#
 # [14] 最长公共前缀
-#
-
-# @lc code=start
+# https://leetcode.cn/problems/longest-common-prefix/description/
+# algorithms
+# Easy (45.17%)
+# Likes:    3507
+# Dislikes: 0
+# Total Accepted:    1.7M
+# Total Submissions: 3.7M
+# Testcase Example:  '["flower","flow","flight"]'
+# 编写一个函数来查找字符串数组中的最长公共前缀。
+# 如果不存在公共前缀，返回空字符串 ""。
+# 示例 1：
+# 输入：strs = ["flower","flow","flight"]
+# 输出："fl"
+# 示例 2：
+# 输入：strs = ["dog","racecar","car"]
+# 输出：""
+# 解释：输入不存在公共前缀。
+# 提示：
+# 1 <= strs.length <= 200
+# 0 <= strs[i].length <= 200
+# strs[i] 如果非空，则仅由小写英文字母组成
 from typing import List
 
 
@@ -17,17 +33,6 @@ class Solution:
             result = self.commonPrefix_dp(result, strs[i])
             if not result:
                 return ""
-        return result
-
-    # 暴力法
-    def commonPrefix(self, str1: str, str2: str) -> str:
-        if not str1 or not str2:
-            return ""
-        result = ""
-        for i in range(min(len(str1), len(str2))):
-            if str1[i] != str2[i]:
-                return result
-            result += str1[i]
         return result
 
     # 动态规划法
@@ -44,6 +49,17 @@ class Solution:
                 break
             max_len = max(max_len, dp[i][i])
         result = str1[:max_len]
+        return result
+
+    # 暴力法
+    def commonPrefix(self, str1: str, str2: str) -> str:
+        if not str1 or not str2:
+            return ""
+        result = ""
+        for i in range(min(len(str1), len(str2))):
+            if str1[i] != str2[i]:
+                return result
+            result += str1[i]
         return result
 
 
