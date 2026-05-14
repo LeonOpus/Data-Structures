@@ -32,17 +32,19 @@ from typing import List
 
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        map = {}
-        # for key, value in enumerate(nums):
-        #     if target - value in map:
-        #         return [map[target - value], key]
-        #     map[value] = key
+        map: dict[int, int] = {}
+        key: int
+        value: int
         for i in range(0, len(nums)):
             key = nums[i]
             value = i
             if target - key in map:
                 return [map[target - key], value]
             map[key] = value
+        # for key, value in enumerate(nums):
+        #     if target - value in map:
+        #         return [map[target - value], key]
+        #     map[value] = key
         return []
 
 

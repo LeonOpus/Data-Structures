@@ -49,8 +49,8 @@ class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         if not head:
             return head
-        count = 0
-        cur = head
+        count: int = 0
+        cur: Optional[ListNode] = head
         while cur and count != k:
             cur = cur.next
             count += 1

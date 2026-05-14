@@ -40,7 +40,7 @@ class Solution:
         if not str1 or not str2:
             return ""
         result = ""
-        dp = [[False] * (len(str2) + 1) for _ in range(len(str1) + 1)]
+        dp = [[0] * (len(str2) + 1) for _ in range(len(str1) + 1)]
         max_len = 0
         for i in range(1, min(len(str1), len(str2)) + 1):
             if str1[i - 1] == str2[i - 1]:

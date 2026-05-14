@@ -1,9 +1,5 @@
-#
 # @lc app=leetcode.cn id=2841 lang=python3
-#
 # [2841] 几乎唯一子数组的最大和
-#
-
 # @lc code=start
 from typing import List
 from collections import Counter
