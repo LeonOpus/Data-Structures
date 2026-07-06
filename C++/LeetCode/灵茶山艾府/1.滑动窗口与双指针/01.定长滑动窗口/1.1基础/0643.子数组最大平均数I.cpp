@@ -19,33 +19,33 @@ using namespace std;
 class Solution
 {
 public:
-  double findMaxAverage(const vector<int> &nums, int k)
-  {
-    double result = 0;
-    double sum = 0;
-    // 处理第一个窗口
-    for (int i = 0; i < k; i += 1)
+    double findMaxAverage(const vector<int> &nums, int k)
     {
-      sum += nums[i];
+        double result = 0;
+        double sum = 0;
+        // 处理第一个窗口
+        for (int i = 0; i < k; i += 1)
+        {
+            sum += nums[i];
+        }
+        result = sum / k;
+        // 处理后续窗口
+        for (int i = k; i < nums.size(); i += 1)
+        {
+            sum += nums[i];
+            sum -= nums[i - k];
+            result = max(result, sum / k);
+        }
+        return result;
     }
-    result = sum / k;
-    // 处理后续窗口
-    for (int i = k; i < nums.size(); i += 1)
-    {
-      sum += nums[i];
-      sum -= nums[i - k];
-      result = max(result, sum / k);
-    }
-    return result;
-  }
 };
 int main()
 {
-  Solution s;
-  cout << s.findMaxAverage(vector<int>{1, 12, -5, -6, 50, 3}, 4) << endl;
-  cout << s.findMaxAverage(vector<int>{5}, 1) << endl;
-  cout << s.findMaxAverage(vector<int>{-1}, 1) << endl;
-  cout << s.findMaxAverage(vector<int>{0, 4, 0, 3, 2}, 1) << endl;
-  cout << s.findMaxAverage(vector<int>{0, 4, 0, 3, 2}, 2) << endl;
-  return 0;
+    Solution s;
+    cout << s.findMaxAverage(vector<int>{1, 12, -5, -6, 50, 3}, 4) << endl;
+    cout << s.findMaxAverage(vector<int>{5}, 1) << endl;
+    cout << s.findMaxAverage(vector<int>{-1}, 1) << endl;
+    cout << s.findMaxAverage(vector<int>{0, 4, 0, 3, 2}, 1) << endl;
+    cout << s.findMaxAverage(vector<int>{0, 4, 0, 3, 2}, 2) << endl;
+    return 0;
 }
