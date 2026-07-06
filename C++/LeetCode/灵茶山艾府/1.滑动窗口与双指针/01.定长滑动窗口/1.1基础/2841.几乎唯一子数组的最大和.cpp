@@ -31,68 +31,68 @@ using namespace std;
 class Solution
 {
 public:
-  long maxSum(vector<int> &nums, int m, int k)
-  {
-    if (nums.size() < k)
-      return 0;
-    long sum = 0;
-    long result = 0;
-    unordered_map<long, int> cntMap;
-    // 处理第一个窗口
-    for (int i = 0; i < k; ++i)
+    long maxSum(vector<int> &nums, int m, int k)
     {
-      cntMap[nums[i]] += 1;
-      sum += nums[i];
+        if (nums.size() < k)
+            return 0;
+        long sum = 0;
+        long result = 0;
+        unordered_map<long, int> cntMap;
+        // 处理第一个窗口
+        for (int i = 0; i < k; ++i)
+        {
+            cntMap[nums[i]] += 1;
+            sum += nums[i];
+        }
+        if (cntMap.size() >= m)
+        {
+            result = max(result, sum);
+        }
+        // 处理后续窗口
+        for (int i = k; i < nums.size(); i += 1)
+        {
+            sum += nums[i];
+            sum -= nums[i - k];
+            cntMap[nums[i]] += 1;
+            cntMap[nums[i - k]] -= 1;
+            if (cntMap[nums[i - k]] == 0)
+            {
+                cntMap.erase(nums[i - k]);
+            }
+            if (cntMap.size() >= m)
+            {
+                result = max(result, sum);
+            }
+        }
+        return result;
     }
-    if (cntMap.size() >= m)
-    {
-      result = max(result, sum);
-    }
-    // 处理后续窗口
-    for (int i = k; i < nums.size(); i += 1)
-    {
-      sum += nums[i];
-      sum -= nums[i - k];
-      cntMap[nums[i]] += 1;
-      cntMap[nums[i - k]] -= 1;
-      if (cntMap[nums[i - k]] == 0)
-      {
-        cntMap.erase(nums[i - k]);
-      }
-      if (cntMap.size() >= m)
-      {
-        result = max(result, sum);
-      }
-    }
-    return result;
-  }
 };
 int main()
 {
-  vector<int> nums = {2, 6, 7, 3, 1, 7};
-  int m = 3;
-  int k = 4;
-  Solution s;
-  cout << s.maxSum(nums, m, k) << endl;
-  nums = {5, 9, 9, 2, 4, 5, 4};
-  m = 1;
-  k = 3;
-  cout << s.maxSum(nums, m, k) << endl;
-  nums = {1, 2, 1, 2, 1, 2, 1};
-  m = 3;
-  k = 3;
-  cout << s.maxSum(nums, m, k) << endl;
-  nums = {1, 2, 3, 4, 5, 6, 7};
-  m = 2;
-  k = 3;
-  cout << s.maxSum(nums, m, k) << endl;
-  nums = {1, 1, 1, 2};
-  m = 2;
-  k = 2;
-  cout << s.maxSum(nums, m, k) << endl;
-  nums = {1, 1, 1, 2, 3};
-  m = 2;
-  k = 3;
-  cout << s.maxSum(nums, m, k) << endl;
-  return 0;
+    vector<int> nums = {2, 6, 7, 3, 1, 7};
+    int m = 3;
+    int k = 4;
+    Solution s;
+    cout << s.maxSum(nums, m, k) << endl;
+    nums = {5, 9, 9, 2, 4, 5, 4};
+    m = 1;
+    k = 3;
+    cout << s.maxSum(nums, m, k) << endl;
+    nums = {1, 2, 1, 2, 1, 2, 1};
+    m = 3;
+    k = 3;
+    cout << s.maxSum(nums, m, k) << endl;
+    nums = {1, 2, 3, 4, 5, 6, 7};
+    m = 2;
+    k = 3;
+    cout << s.maxSum(nums, m, k) << endl;
+    nums = {1, 1, 1, 2};
+    m = 2;
+    k = 2;
+    cout << s.maxSum(nums, m, k) << endl;
+    nums = {1, 1, 1, 2, 3};
+    m = 2;
+    k = 3;
+    cout << s.maxSum(nums, m, k) << endl;
+    return 0;
 }

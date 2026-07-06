@@ -19,40 +19,40 @@ using namespace std;
 class Solution
 {
 public:
-  int numOfSubarrays(vector<int> &arr, int k, int threshold)
-  {
-    int result = 0;
-    int sum = 0;
-    int quotient = 0;
-    for (int i = 0; i < k; ++i)
+    int numOfSubarrays(vector<int> &arr, int k, int threshold)
     {
-      sum += arr[i];
+        int result = 0;
+        int sum = 0;
+        int quotient = 0;
+        for (int i = 0; i < k; ++i)
+        {
+            sum += arr[i];
+        }
+        quotient = sum / k;
+        if (quotient >= threshold)
+        {
+            result += 1;
+        }
+        for (int i = k; i < arr.size(); ++i)
+        {
+            sum += arr[i];
+            sum -= arr[i - k];
+            quotient = sum / k;
+            if (quotient >= threshold)
+            {
+                result += 1;
+            }
+        }
+        return result;
     }
-    quotient = sum / k;
-    if (quotient >= threshold)
-    {
-      result += 1;
-    }
-    for (int i = k; i < arr.size(); ++i)
-    {
-      sum += arr[i];
-      sum -= arr[i - k];
-      quotient = sum / k;
-      if (quotient >= threshold)
-      {
-        result += 1;
-      }
-    }
-    return result;
-  }
 };
 int main()
 {
-  vector<int> arr = {2, 2, 2, 2, 5, 5, 5, 8};
-  int k = 3;
-  int threshold = 4;
-  Solution s;
-  int result = s.numOfSubarrays(arr, k, threshold);
-  cout << result << endl;
-  return 0;
+    vector<int> arr = {2, 2, 2, 2, 5, 5, 5, 8};
+    int k = 3;
+    int threshold = 4;
+    Solution s;
+    int result = s.numOfSubarrays(arr, k, threshold);
+    cout << result << endl;
+    return 0;
 }

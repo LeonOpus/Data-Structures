@@ -38,39 +38,39 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> getAverages(vector<int> &nums, int k)
-  {
-    if (k > nums.size() || 2 * k + 1 > nums.size())
+    vector<int> getAverages(vector<int> &nums, int k)
     {
-      return vector<int>(nums.size(), -1);
+        if (k > nums.size() || 2 * k + 1 > nums.size())
+        {
+            return vector<int>(nums.size(), -1);
+        }
+        vector<int> result(nums.size(), -1);
+        long sum = 0;
+        int k_ = 2 * k + 1;
+        for (int i = 0; i < k_; i += 1)
+        {
+            sum += nums[i];
+        }
+        result[k] = sum / k_;
+        for (int i = k_; i < nums.size(); i += 1)
+        {
+            sum += nums[i];
+            sum -= nums[i - k_];
+            result[i - k] = sum / k_;
+        }
+        return result;
     }
-    vector<int> result(nums.size(), -1);
-    long sum = 0;
-    int k_ = 2 * k + 1;
-    for (int i = 0; i < k_; i += 1)
-    {
-      sum += nums[i];
-    }
-    result[k] = sum / k_;
-    for (int i = k_; i < nums.size(); i += 1)
-    {
-      sum += nums[i];
-      sum -= nums[i - k_];
-      result[i - k] = sum / k_;
-    }
-    return result;
-  }
 };
 int main()
 {
-  vector<int> nums = {7, 4, 3, 9, 1, 8, 5, 2, 6};
-  int k = 3;
-  Solution s;
-  vector<int> result = s.getAverages(nums, k);
-  for (int i = 0; i < result.size(); i += 1)
-  {
-    cout << result[i] << " ";
-  }
-  cout << endl;
-  return 0;
+    vector<int> nums = {7, 4, 3, 9, 1, 8, 5, 2, 6};
+    int k = 3;
+    Solution s;
+    vector<int> result = s.getAverages(nums, k);
+    for (int i = 0; i < result.size(); i += 1)
+    {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+    return 0;
 }

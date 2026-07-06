@@ -32,34 +32,34 @@ using namespace std;
 class Solution
 {
 public:
-  bool containsNearbyAlmostDuplicate(vector<int> &nums, int indexDiff, int valueDiff)
-  {
-    for (int i = 0; i < nums.size(); i++)
+    bool containsNearbyAlmostDuplicate(vector<int> &nums, int indexDiff, int valueDiff)
     {
-      for (int j = i + 1; j < nums.size(); j += 1)
-      {
-        if (abs(i - j) <= indexDiff && abs(nums[i] - nums[j]) <= valueDiff)
+        for (int i = 0; i < nums.size(); i++)
         {
-          return true;
+            for (int j = i + 1; j < nums.size(); j += 1)
+            {
+                if (abs(i - j) <= indexDiff && abs(nums[i] - nums[j]) <= valueDiff)
+                {
+                    return true;
+                }
+            }
         }
-      }
+        return false;
     }
-    return false;
-  }
 };
 int main()
 {
-  vector<int> nums = {1, 2, 3, 1};
-  int indexDiff = 3;
-  int valueDiff = 0;
-  Solution s;
-  bool result = s.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff);
-  cout << result;
-  cout << endl;
-  nums = {1, 5, 9, 1, 5, 9};
-  indexDiff = 2;
-  valueDiff = 3;
-  result = s.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff);
-  cout << result << endl;
-  return 0;
+    vector<int> nums = {1, 2, 3, 1};
+    int indexDiff = 3;
+    int valueDiff = 0;
+    Solution s;
+    bool result = s.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff);
+    cout << result;
+    cout << endl;
+    nums = {1, 5, 9, 1, 5, 9};
+    indexDiff = 2;
+    valueDiff = 3;
+    result = s.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff);
+    cout << result << endl;
+    return 0;
 }

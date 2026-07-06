@@ -33,52 +33,52 @@ using namespace std;
 class Solution
 {
 public:
-  int minimumRecolors(string blocks, int k)
-  {
-    if (blocks.empty() || k == 0)
+    int minimumRecolors(string blocks, int k)
     {
-      return 0;
+        if (blocks.empty() || k == 0)
+        {
+            return 0;
+        }
+        int result = 0;
+        int b_count = 0;
+        // 处理第一个窗口
+        for (int i = 0; i < k; i += 1)
+        {
+            if (blocks[i] == 'B')
+            {
+                b_count += 1;
+            }
+        }
+        if (b_count == k)
+        {
+            return 0;
+        }
+        // 处理后续窗口
+        int w_count = k - b_count;
+        result = w_count;
+        for (int i = k; i < blocks.size(); i += 1)
+        {
+            if (blocks[i] == 'B')
+            {
+                b_count += 1;
+            }
+            if (blocks[i - k] == 'B')
+            {
+                b_count -= 1;
+            }
+            if (b_count == k)
+                return 0;
+            w_count = k - b_count;
+            result = min(w_count, result);
+        }
+        return result;
     }
-    int result = 0;
-    int b_count = 0;
-    // 处理第一个窗口
-    for (int i = 0; i < k; i += 1)
-    {
-      if (blocks[i] == 'B')
-      {
-        b_count += 1;
-      }
-    }
-    if (b_count == k)
-    {
-      return 0;
-    }
-    // 处理后续窗口
-    int w_count = k - b_count;
-    result = w_count;
-    for (int i = k; i < blocks.size(); i += 1)
-    {
-      if (blocks[i] == 'B')
-      {
-        b_count += 1;
-      }
-      if (blocks[i - k] == 'B')
-      {
-        b_count -= 1;
-      }
-      if (b_count == k)
-        return 0;
-      w_count = k - b_count;
-      result = min(w_count, result);
-    }
-    return result;
-  }
 };
 int main()
 {
-  Solution s;
-  cout << s.minimumRecolors("WBWBWBBWBW", 7) << endl;
-  cout << s.minimumRecolors("WBWBBBW", 2) << endl;
-  cout << s.minimumRecolors("WBBW", 2) << endl;
-  return 0;
+    Solution s;
+    cout << s.minimumRecolors("WBWBWBBWBW", 7) << endl;
+    cout << s.minimumRecolors("WBWBBBW", 2) << endl;
+    cout << s.minimumRecolors("WBBW", 2) << endl;
+    return 0;
 }

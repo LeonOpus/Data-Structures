@@ -22,35 +22,35 @@ using namespace std;
 class Solution
 {
 public:
-  int lengthOfLongestSubstring(string s)
-  {
-    int result = 0;
-    unordered_map<char, int> chMap;
-    int left = 0;
-    for (int right = 0; right < s.size(); right += 1)
+    int lengthOfLongestSubstring(string s)
     {
-      chMap[s[right]] += 1;
-      while (chMap[s[right]] > 1)
-      {
-        chMap[s[left]] -= 1;
-        left += 1;
-      }
-      result = max(result, right - left + 1);
+        int result = 0;
+        unordered_map<char, int> chMap;
+        int left = 0;
+        for (int right = 0; right < s.size(); right += 1)
+        {
+            chMap[s[right]] += 1;
+            while (chMap[s[right]] > 1)
+            {
+                chMap[s[left]] -= 1;
+                left += 1;
+            }
+            result = max(result, right - left + 1);
+        }
+        return result;
     }
-    return result;
-  }
 };
 
 int main()
 {
-  Solution s;
-  string s_1 = "abcabcbb";
-  string s_2 = "bbbbb";
-  string s_3 = "pwwkew";
-  string s_4 = "au";
-  cout << s.lengthOfLongestSubstring(s_1) << endl;
-  cout << s.lengthOfLongestSubstring(s_2) << endl;
-  cout << s.lengthOfLongestSubstring(s_3) << endl;
-  cout << s.lengthOfLongestSubstring(s_4) << endl;
-  return 0;
+    Solution s;
+    string s_1 = "abcabcbb";
+    string s_2 = "bbbbb";
+    string s_3 = "pwwkew";
+    string s_4 = "au";
+    cout << s.lengthOfLongestSubstring(s_1) << endl;
+    cout << s.lengthOfLongestSubstring(s_2) << endl;
+    cout << s.lengthOfLongestSubstring(s_3) << endl;
+    cout << s.lengthOfLongestSubstring(s_4) << endl;
+    return 0;
 }

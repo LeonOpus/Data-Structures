@@ -24,58 +24,58 @@ using namespace std;
 class Solution
 {
 public:
-  bool hasAllCodes(string s, int k)
-  {
-    if (s.length() < k)
+    bool hasAllCodes(string s, int k)
     {
-      return false;
-    }
-    // 1.建立一个集合存储所有长度为k的二进制子串
-    unordered_set<string> result;
-    string path;
-    backtracking(k, path, result);
-    // 2.滑动窗口，检查每个长度为k的子串是否在集合中
-    string sub_str = s.substr(0, k); // 处理第一个窗口
-    result.erase(sub_str);           // 直接检查并删除，无需迭代器
-    // 处理后续窗口
-    for (int i = k; i < s.size(); i += 1)
-    {
-      sub_str = s.substr(i - k + 1, k);
-      result.erase(sub_str); // unordered_set的erase可以直接传入值
-    }
-    return result.empty();
-  }
-
-  void backtracking(int k, string &path, unordered_set<string> &result)
-  {
-    if (path.size() == k)
-    {
-      result.insert(path); // 插入集合而不是vector
-      return;
+        if (s.length() < k)
+        {
+            return false;
+        }
+        // 1.建立一个集合存储所有长度为k的二进制子串
+        unordered_set<string> result;
+        string path;
+        backtracking(k, path, result);
+        // 2.滑动窗口，检查每个长度为k的子串是否在集合中
+        string sub_str = s.substr(0, k); // 处理第一个窗口
+        result.erase(sub_str);           // 直接检查并删除，无需迭代器
+        // 处理后续窗口
+        for (int i = k; i < s.size(); i += 1)
+        {
+            sub_str = s.substr(i - k + 1, k);
+            result.erase(sub_str); // unordered_set的erase可以直接传入值
+        }
+        return result.empty();
     }
 
-    for (const char &ch : {'0', '1'}) // 每一层有两个选择：添加'0'或添加'1'
+    void backtracking(int k, string &path, unordered_set<string> &result)
     {
-      path.push_back(ch);            // 做选择
-      backtracking(k, path, result); // 递归到下一层
-      path.pop_back();               // 回溯，撤销选择
+        if (path.size() == k)
+        {
+            result.insert(path); // 插入集合而不是vector
+            return;
+        }
+
+        for (const char &ch : {'0', '1'}) // 每一层有两个选择：添加'0'或添加'1'
+        {
+            path.push_back(ch);            // 做选择
+            backtracking(k, path, result); // 递归到下一层
+            path.pop_back();               // 回溯，撤销选择
+        }
     }
-  }
 };
 int main()
 {
-  Solution solution;
-  string s = "00110110";
-  int k = 2;
-  bool result = solution.hasAllCodes(s, k);
-  cout << result << endl;
-  string s1 = "0110";
-  int k1 = 2;
-  bool result1 = solution.hasAllCodes(s1, k1);
-  cout << result1 << endl;
-  string s2 = "0110";
-  int k2 = 1;
-  bool result2 = solution.hasAllCodes(s2, k2);
-  cout << result2 << endl;
-  return 0;
+    Solution solution;
+    string s = "00110110";
+    int k = 2;
+    bool result = solution.hasAllCodes(s, k);
+    cout << result << endl;
+    string s1 = "0110";
+    int k1 = 2;
+    bool result1 = solution.hasAllCodes(s1, k1);
+    cout << result1 << endl;
+    string s2 = "0110";
+    int k2 = 1;
+    bool result2 = solution.hasAllCodes(s2, k2);
+    cout << result2 << endl;
+    return 0;
 }

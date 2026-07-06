@@ -26,71 +26,71 @@ using namespace std;
 class Solution
 {
 public:
-  string minWindow(string s, string t)
-  {
-    if (t.size() > s.size())
+    string minWindow(string s, string t)
     {
-      return "";
-    }
-    string result = "";
-    unordered_map<char, int> t_map;
-    unordered_map<char, int> match_map;
-    for (char &ch : t)
-    {
-      t_map[ch] += 1;
-    }
-    int length = INT_MAX;
-    int valid = 0; // 记录已完全匹配的字符种类数
-    int begin = 0; // 记录最小窗口的起始位置
-    int left = 0;
-    for (int right = 0; right < s.size(); right += 1)
-    {
-      if (t_map.find(s[right]) != t_map.end())
-      {
-        match_map[s[right]] += 1;
-        if (match_map[s[right]] == t_map[s[right]]) // 当窗口中该字符数量等于t中数量时，增加有效计数
+        if (t.size() > s.size())
         {
-          valid += 1;
+            return "";
         }
-      }
-      while (valid == t_map.size()) // 当所有字符都匹配时有效计数即为t_map的size，收缩左边界
-      {
-        // 这是一个有效的覆盖子串，首先计算当前窗口长度，并更新最小窗口信息
-        if (right - left + 1 < length)
+        string result = "";
+        unordered_map<char, int> t_map;
+        unordered_map<char, int> match_map;
+        for (char &ch : t)
         {
-          length = right - left + 1;
-          begin = left; // 记录最小窗口的起始位置
-          result = s.substr(begin, length);
+            t_map[ch] += 1;
         }
-        if (t_map.find(s[left]) != t_map.end()) // 然后再移动左边界，如果左边界的字符包含在t内，则有效计数-1
+        int length = INT_MAX;
+        int valid = 0; // 记录已完全匹配的字符种类数
+        int begin = 0; // 记录最小窗口的起始位置
+        int left = 0;
+        for (int right = 0; right < s.size(); right += 1)
         {
-          if (match_map[s[left]] == t_map[s[left]])
-          {
-            valid -= 1; // 如果移除后数量不满足at中的要求，减少有效计数
-          }
-          match_map[s[left]] -= 1;
+            if (t_map.find(s[right]) != t_map.end())
+            {
+                match_map[s[right]] += 1;
+                if (match_map[s[right]] == t_map[s[right]]) // 当窗口中该字符数量等于t中数量时，增加有效计数
+                {
+                    valid += 1;
+                }
+            }
+            while (valid == t_map.size()) // 当所有字符都匹配时有效计数即为t_map的size，收缩左边界
+            {
+                // 这是一个有效的覆盖子串，首先计算当前窗口长度，并更新最小窗口信息
+                if (right - left + 1 < length)
+                {
+                    length = right - left + 1;
+                    begin = left; // 记录最小窗口的起始位置
+                    result = s.substr(begin, length);
+                }
+                if (t_map.find(s[left]) != t_map.end()) // 然后再移动左边界，如果左边界的字符包含在t内，则有效计数-1
+                {
+                    if (match_map[s[left]] == t_map[s[left]])
+                    {
+                        valid -= 1; // 如果移除后数量不满足at中的要求，减少有效计数
+                    }
+                    match_map[s[left]] -= 1;
+                }
+                left += 1;
+            }
         }
-        left += 1;
-      }
+        if (length != INT_MAX)
+        {
+            result = s.substr(begin, length);
+        }
+        return result;
     }
-    if (length != INT_MAX)
-    {
-      result = s.substr(begin, length);
-    }
-    return result;
-  }
 };
 int main()
 {
-  string s_1 = "ADOBECODEBANC", t_1 = "ABC";
-  string s_2 = "a", t_2 = "a";
-  string s_3 = "a", t_3 = "aa";
-  Solution sol;
-  string res_1 = sol.minWindow(s_1, t_1);
-  string res_2 = sol.minWindow(s_2, t_2);
-  string res_3 = sol.minWindow(s_3, t_3);
-  cout << res_1 << endl;
-  cout << res_2 << endl;
-  cout << res_3 << endl;
-  return 0;
+    string s_1 = "ADOBECODEBANC", t_1 = "ABC";
+    string s_2 = "a", t_2 = "a";
+    string s_3 = "a", t_3 = "aa";
+    Solution sol;
+    string res_1 = sol.minWindow(s_1, t_1);
+    string res_2 = sol.minWindow(s_2, t_2);
+    string res_3 = sol.minWindow(s_3, t_3);
+    cout << res_1 << endl;
+    cout << res_2 << endl;
+    cout << res_3 << endl;
+    return 0;
 }

@@ -17,43 +17,42 @@ using namespace std;
 class Solution
 {
 public:
-  int numKLenSubstrNoRepeats(string s, int k)
-  {
-    if (k > s.size())
-      return 0;
-    int result = 0;
-    unordered_map<char, int> chMap;
-    // 处理第一个窗口
-    for (int i = 0; i < k; i += 1)
+    int numKLenSubstrNoRepeats(string s, int k)
     {
-      chMap[s[i]] += 1;
+        if (k > s.size())
+            return 0;
+        int result = 0;
+        unordered_map<char, int> chMap;
+        // 处理第一个窗口
+        for (int i = 0; i < k; i += 1)
+        {
+            chMap[s[i]] += 1;
+        }
+        if (chMap.size() == k)
+        {
+            result += 1;
+        }
+        // 处理后续窗口
+        for (int i = k; i < s.size(); i += 1)
+        {
+            chMap[s[i]] += 1;
+            chMap[s[i - k]] -= 1;
+            if (chMap[s[i - k]] == 0)
+                chMap.erase(s[i - k]);
+            if (chMap.size() == k)
+                result += 1;
+        }
+        return result;
     }
-    if (chMap.size() == k)
-    {
-      result += 1;
-    }
-    // 处理后续窗口
-    for (int i = k; i < s.size(); i += 1)
-    {
-      chMap[s[i]] += 1;
-      chMap[s[i - k]] -= 1;
-      if (chMap[s[i - k]] == 0)
-        chMap.erase(s[i - k]);
-      if (chMap.size() == k)
-        result += 1;
-    }
-    return result;
-  }
 };
-
 int main()
 {
-  Solution s;
-  string s1 = "havefunonleetcode";
-  string s2 = "home";
-  string s3 = "aabab";
-  cout << s.numKLenSubstrNoRepeats(s1, 5) << endl;
-  cout << s.numKLenSubstrNoRepeats(s2, 5) << endl;
-  cout << s.numKLenSubstrNoRepeats(s3, 2) << endl;
-  return 0;
+    Solution s;
+    string s1 = "havefunonleetcode";
+    string s2 = "home";
+    string s3 = "aabab";
+    cout << s.numKLenSubstrNoRepeats(s1, 5) << endl;
+    cout << s.numKLenSubstrNoRepeats(s2, 5) << endl;
+    cout << s.numKLenSubstrNoRepeats(s3, 2) << endl;
+    return 0;
 }

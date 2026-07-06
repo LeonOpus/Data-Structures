@@ -25,44 +25,44 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> distinctNumbers(vector<int> &nums, int k)
-  {
-    vector<int> result(nums.size() - k + 1);
-    unordered_map<int, int> numMap;
-    // 处理第一个窗口
-    for (int i = 0; i < k; i += 1)
+    vector<int> distinctNumbers(vector<int> &nums, int k)
     {
-      numMap[nums[i]] += 1;
+        vector<int> result(nums.size() - k + 1);
+        unordered_map<int, int> numMap;
+        // 处理第一个窗口
+        for (int i = 0; i < k; i += 1)
+        {
+            numMap[nums[i]] += 1;
+        }
+        result[0] = numMap.size();
+        // 处理后续窗口
+        for (int i = k; i < nums.size(); i += 1)
+        {
+            numMap[nums[i]] += 1;
+            numMap[nums[i - k]] -= 1;
+            if (numMap[nums[i - k]] == 0)
+                numMap.erase(nums[i - k]);
+            result[i - k + 1] = numMap.size();
+        }
+        return result;
     }
-    result[0] = numMap.size();
-    // 处理后续窗口
-    for (int i = k; i < nums.size(); i += 1)
-    {
-      numMap[nums[i]] += 1;
-      numMap[nums[i - k]] -= 1;
-      if (numMap[nums[i - k]] == 0)
-        numMap.erase(nums[i - k]);
-      result[i - k + 1] = numMap.size();
-    }
-    return result;
-  }
 };
 int main()
 {
-  Solution s;
-  vector<int> nums = {1, 2, 3, 2, 2, 1, 3};
-  vector<int> result = s.distinctNumbers(nums, 3);
-  for (int i = 0; i < result.size(); i += 1)
-  {
-    cout << result[i] << " ";
-  }
-  cout << endl;
-  vector<int> nums1 = {1, 1, 1, 1, 2, 3, 4};
-  vector<int> result1 = s.distinctNumbers(nums1, 4);
-  for (int i = 0; i < result1.size(); i += 1)
-  {
-    cout << result1[i] << " ";
-  }
-  cout << endl;
-  return 0;
+    Solution s;
+    vector<int> nums = {1, 2, 3, 2, 2, 1, 3};
+    vector<int> result = s.distinctNumbers(nums, 3);
+    for (int i = 0; i < result.size(); i += 1)
+    {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+    vector<int> nums1 = {1, 1, 1, 1, 2, 3, 4};
+    vector<int> result1 = s.distinctNumbers(nums1, 4);
+    for (int i = 0; i < result1.size(); i += 1)
+    {
+        cout << result1[i] << " ";
+    }
+    cout << endl;
+    return 0;
 }

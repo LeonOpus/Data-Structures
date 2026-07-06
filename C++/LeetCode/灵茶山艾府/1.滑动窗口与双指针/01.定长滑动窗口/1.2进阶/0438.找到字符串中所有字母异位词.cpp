@@ -25,63 +25,63 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> findAnagrams(string s, string p)
-  {
-    if (p.size() > s.size())
+    vector<int> findAnagrams(string s, string p)
     {
-      return {};
+        if (p.size() > s.size())
+        {
+            return {};
+        }
+        vector<int> result;
+        int k = p.size();
+        unordered_map<char, int> s_map;
+        unordered_map<char, int> p_map;
+        // 处理第一个窗口
+        for (int i = 0; i < k; i += 1)
+        {
+            s_map[s[i]] += 1;
+            p_map[p[i]] += 1;
+        }
+        if (s_map == p_map) // 检查第一个窗口是否符合
+        {
+            result.push_back(0);
+        }
+        // 处理后续窗口
+        for (int i = k; i < s.size(); i += 1)
+        {
+            s_map[s[i]] += 1;     // 添加窗口右侧新字符
+            s_map[s[i - k]] -= 1; // 移除窗口左侧字符
+            if (s_map[s[i - k]] == 0)
+            {
+                s_map.erase(s[i - k]);
+            }
+            // 比较当前窗口与p的字符频率
+            if (s_map == p_map)
+            {
+                result.push_back(i - k + 1); // 添加正确的起始索引
+            }
+        }
+        return result;
     }
-    vector<int> result;
-    int k = p.size();
-    unordered_map<char, int> s_map;
-    unordered_map<char, int> p_map;
-    // 处理第一个窗口
-    for (int i = 0; i < k; i += 1)
-    {
-      s_map[s[i]] += 1;
-      p_map[p[i]] += 1;
-    }
-    if (s_map == p_map) // 检查第一个窗口是否符合
-    {
-      result.push_back(0);
-    }
-    // 处理后续窗口
-    for (int i = k; i < s.size(); i += 1)
-    {
-      s_map[s[i]] += 1;     // 添加窗口右侧新字符
-      s_map[s[i - k]] -= 1; // 移除窗口左侧字符
-      if (s_map[s[i - k]] == 0)
-      {
-        s_map.erase(s[i - k]);
-      }
-      // 比较当前窗口与p的字符频率
-      if (s_map == p_map)
-      {
-        result.push_back(i - k + 1); // 添加正确的起始索引
-      }
-    }
-    return result;
-  }
 };
 
 int main()
 {
-  string s = "cbaebabacd";
-  string p = "abc";
-  string s1 = "eklpyqrbgjdwtcaxzsnifvhmoueklpyqrbgjdwtcaxzsnifvhmoueklpyqrbg";
-  string p1 = "yqrbgjdwtcaxzsnifvhmou";
-  Solution sol;
-  vector<int> result = sol.findAnagrams(s, p);
-  for (int i = 0; i < result.size(); i++)
-  {
-    cout << result[i] << " ";
-  }
-  cout << endl;
-  vector<int> result1 = sol.findAnagrams(s1, p1);
-  for (int i = 0; i < result1.size(); i++)
-  {
-    cout << result1[i] << " ";
-  }
-  cout << endl;
-  return 0;
+    string s = "cbaebabacd";
+    string p = "abc";
+    string s1 = "eklpyqrbgjdwtcaxzsnifvhmoueklpyqrbgjdwtcaxzsnifvhmoueklpyqrbg";
+    string p1 = "yqrbgjdwtcaxzsnifvhmou";
+    Solution sol;
+    vector<int> result = sol.findAnagrams(s, p);
+    for (int i = 0; i < result.size(); i++)
+    {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+    vector<int> result1 = sol.findAnagrams(s1, p1);
+    for (int i = 0; i < result1.size(); i++)
+    {
+        cout << result1[i] << " ";
+    }
+    cout << endl;
+    return 0;
 }
