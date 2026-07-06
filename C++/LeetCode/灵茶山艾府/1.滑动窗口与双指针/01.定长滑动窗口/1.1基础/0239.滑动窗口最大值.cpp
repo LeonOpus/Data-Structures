@@ -26,63 +26,62 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> maxSlidingWindow(vector<int> &nums, int k)
-  {
-    if (nums.empty() || k <= 0)
+    vector<int> maxSlidingWindow(vector<int> &nums, int k)
     {
-      return {};
-    }
-    if (k > nums.size())
-    {
-      return {*max_element(nums.begin(), nums.end())};
-    }
-    if (nums.size() == 1)
-    {
-      return nums;
-    }
-    vector<int> result;
-    int max_num;
-    // 处理第一个窗口
-    max_num = *max_element(nums.begin(), nums.begin() + k);
-    result.emplace_back(max_num);
-    // 处理后续窗口
-    for (int i = k; i < nums.size(); i += 1)
-    {
-      if (nums[i - k] == max_num)
-      {
-        max_num = *max_element(nums.begin() + i - k + 1, nums.begin() + i + 1);
-      }
-      else
-      {
-        if (nums[i] > max_num)
+        if (nums.empty() || k <= 0)
         {
-          max_num = nums[i];
+            return {};
         }
-      }
-      result.emplace_back(max_num);
+        if (k > nums.size())
+        {
+            return {*max_element(nums.begin(), nums.end())};
+        }
+        if (nums.size() == 1)
+        {
+            return nums;
+        }
+        vector<int> result;
+        int max_num;
+        // 处理第一个窗口
+        max_num = *max_element(nums.begin(), nums.begin() + k);
+        result.emplace_back(max_num);
+        // 处理后续窗口
+        for (int i = k; i < nums.size(); i += 1)
+        {
+            if (nums[i - k] == max_num)
+            {
+                max_num = *max_element(nums.begin() + i - k + 1, nums.begin() + i + 1);
+            }
+            else
+            {
+                if (nums[i] > max_num)
+                {
+                    max_num = nums[i];
+                }
+            }
+            result.emplace_back(max_num);
+        }
+        return result;
     }
-    return result;
-  }
 };
-
 int main()
 {
-  Solution s;
-  vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
-  int k = 3;
-  vector<int> nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
-  int k1 = 5;
-  vector<int> result = s.maxSlidingWindow(nums, k);
-  for (int i = 0; i < result.size(); i++)
-  {
-    cout << result[i] << " ";
-  }
-  cout << endl;
-  vector<int> result1 = s.maxSlidingWindow(nums1, k1);
-  for (int i = 0; i < result1.size(); i++)
-  {
-    cout << result1[i] << " ";
-  }
-  cout << endl;
-  return 0;
+    Solution s;
+    vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
+    int k = 3;
+    vector<int> nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
+    int k1 = 5;
+    vector<int> result = s.maxSlidingWindow(nums, k);
+    for (int i = 0; i < result.size(); i++)
+    {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+    vector<int> result1 = s.maxSlidingWindow(nums1, k1);
+    for (int i = 0; i < result1.size(); i++)
+    {
+        cout << result1[i] << " ";
+    }
+    cout << endl;
+    return 0;
 }

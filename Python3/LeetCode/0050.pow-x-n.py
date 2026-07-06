@@ -28,7 +28,19 @@
 # @lc code=start
 class Solution:
     def myPow(self, x: float, n: int) -> float:
+        if n == 0:
+            return 1.0
+        if n < 0:
+            return 1.0 / self.myPow(x, -n)
+        if n % 2 == 0:
+            return self.myPow(x * x, n // 2)
+        else:
+            return x * self.myPow(x * x, (n - 1) // 2)
         return 0.0
 
+
+print(Solution().myPow(2.0, 10))
+print(Solution().myPow(2.1, 3))
+print(Solution().myPow(2.0, -2))
 
 # @lc code=end

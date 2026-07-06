@@ -5,6 +5,7 @@
 # Medium (61.81%)
 # Likes:    5961
 # Dislikes: 0
+
 # Total Accepted:    2.2M
 # Total Submissions: 3.5M
 # Testcase Example:  '[1,8,6,2,5,4,8,3,7]'
