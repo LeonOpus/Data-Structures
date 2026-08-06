@@ -30,9 +30,9 @@ class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         if not s:
             return 0
-        chMap = {}
-        left = 0
-        result = 0
+        chMap: dict[str, int] = {}
+        left: int = 0
+        result: int = 0
         for right in range(len(s)):
             chMap[s[right]] = chMap.get(s[right], 0) + 1
             while chMap[s[right]] > 1:

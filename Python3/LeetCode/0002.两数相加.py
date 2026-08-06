@@ -52,19 +52,11 @@ class Solution:
     def addTwoNumbers(
         self, l1: Optional[ListNode], l2: Optional[ListNode]
     ) -> Optional[ListNode]:
-        dummy = ListNode(0, None)
-        cur = dummy
-        sum = 0
-        quotient = 0
-        remainder = 0
-        carry = 0
+        carry: int = 0
+        dummy: Optional[ListNode] = ListNode(0, None)
+        cur: Optional[ListNode] = dummy
         while l1 and l2:
-            sum = l1.val + l2.val + carry
-            quotient = sum // 10
-            remainder = sum % 10
-            carry = quotient
-            cur.next = ListNode(remainder, None)
-            cur = cur.next
+            sum = l1.val + l2.val
             l1 = l1.next
             l2 = l2.next
         while l1:

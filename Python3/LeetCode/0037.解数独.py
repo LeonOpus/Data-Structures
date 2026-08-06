@@ -25,11 +25,62 @@
 # board[i][j] 是一位数字或者 '.'
 # 题目数据 保证 输入数独仅有一个解
 # @lc code=start
+from typing import List
+
+
 class Solution:
     def solveSudoku(self, board: List[List[str]]) -> None:
-        """
-        Do not return anything, modify board in-place instead.
-        """
+        self.backtracking(board)
+
+    def backtracking(self, board: List[List[str]]) -> bool:
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] == ".":
+                    for k in range(1, 10):
+                        if self.isValid(board, i, j, str(k)):
+                            board[i][j] = str(k)
+                            if self.backtracking(board):
+                                return True
+                            board[i][j] = "."
+                    return False
+        return True
+
+    def isValid(self, board: List[List[str]], row: int, col: int, val: str) -> bool:
+        for i in range(9):
+            if board[row][i] == val:
+                return False
+            if board[i][col] == val:
+                return False
+        return True
+
+    def isInBox(self, board: List[List[str]], row: int, col: int, val: str) -> bool:
+        for i in range(3):
+            for j in range(3):
+                if board[row + i][col + j] == val:
+                    return False
+        return True if row == 8 and col == 8 else self.backtracking(board)
+
+    def isInBox(self, board: List[List[str]], row: int, col: int) -> bool:
+        return row // 3 * 3 + col // 3
+
+
+print(
+    Solution().isInBox(
+        [
+            ["5", "3", ".", ".", "7", ".", ".", ".", "."],
+            ["6", ".", ".", "1", "9", "5", ".", ".", "."],
+            [".", "9", "8", ".", ".", ".", ".", "6", "."],
+            ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
+            ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
+            ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
+            [".", "6", ".", ".", ".", ".", "2", "8", "."],
+            [".", ".", ".", "4", "1", "9", ".", ".", "5"],
+            [".", ".", ".", ".", "8", ".", ".", "7", "9"],
+        ],
+        0,
+        0,
+    )
+)
 
 
 # @lc code=end

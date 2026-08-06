@@ -23,8 +23,8 @@ from typing import List
 
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
-        result = []
-        path = ""
+        result: List[str] = []
+        path: str = ""
         self.backtracking(0, 0, n, path, result)
         return result
 

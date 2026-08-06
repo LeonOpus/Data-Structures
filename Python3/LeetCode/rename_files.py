@@ -1,7 +1,7 @@
 import os
 import re
 
-directory = "."
+directory = "./LeetCode"
 
 # 获取目录中的所有文件
 files = [
