@@ -2,8 +2,6 @@
 
 > [原题链接](https://leetcode.cn/problems/jJ0w9p/)
 
-> 今天继续更新 Leetcode 的剑指 Offer（专项突击版）系列, 大家在公众号 **算法精选** 里回复 `剑指offer2` 就能看到该系列当前连载的所有文章了, 记得关注哦~
-
 ## 题目描述
 
 给定一个非负整数 x ，计算并返回 x 的平方根，即实现 int sqrt(int x) 函数。

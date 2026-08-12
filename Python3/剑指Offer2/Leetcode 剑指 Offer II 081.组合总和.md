@@ -2,8 +2,6 @@
 
 > [原题链接](https://leetcode.cn/problems/Ygoe9J/)
 
-> 今天继续更新 Leetcode 的剑指 Offer（专项突击版）系列, 大家在公众号 **算法精选** 里回复 `剑指offer2` 就能看到该系列当前连载的所有文章了, 记得关注哦~
-
 ## 题目描述
 
 给定一个无重复元素的正整数数组 candidates 和一个正整数 target ，找出 candidates 中所有可以使数字和为目标数 target 的唯一组合。

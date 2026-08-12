@@ -2,8 +2,6 @@
 
 > [原题链接](https://leetcode.cn/problems/iSwD2y/)
 
-> 今天继续更新 Leetcode 的剑指 Offer（专项突击版）系列, 大家在公众号 **算法精选** 里回复 `剑指offer2` 就能看到该系列当前连载的所有文章了, 记得关注哦~
-
 ## 题目描述
 
 - 单词数组 words 的 有效编码 由任意助记字符串 s 和下标数组 indices 组成，且满足：

@@ -2,7 +2,6 @@
 
 > [原题链接](https://leetcode.cn/problems/WGki4K/)
 
-> 今天继续更新 Leetcode 的剑指 Offer（专项突击版）系列, 大家在公众号 **算法精选** 里回复 `剑指offer2` 就能看到该系列当前连载的所有文章了, 记得关注哦~
 
 ## 题目描述
 

@@ -2,8 +2,6 @@
 
 > [原题链接](https://leetcode.cn/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/)
 
-> 今天继续更新 Leetcode 的剑指 Offer（专项突击版）系列, 大家在公众号 **算法精选** 里回复 `剑指offer2` 就能看到该系列当前连载的所有文章了, 记得关注哦~
-
 ## 题目描述
 
 家居整理师将待整理衣橱划分为 m x n 的二维矩阵 grid，其中 grid[i][j] 代表一个需要整理的格子。整理师自 grid[0][0] 开始 逐行逐列 地整理每个格子。
