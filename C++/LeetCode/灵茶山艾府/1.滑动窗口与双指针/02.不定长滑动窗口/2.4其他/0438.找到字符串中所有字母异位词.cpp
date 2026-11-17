@@ -26,53 +26,45 @@ using namespace std;
 class Solution
 {
 public:
-  vector<int> findAnagrams(string s, string p)
-  {
-    if (p.size() > s.size())
-      return {};
-    vector<int> result;
-    unordered_map<char, int> p_map;
-    for (char &ch : p)
+    vector<int> findAnagrams(string s, string p)
     {
-      p_map[ch] += 1;
+        if (p.size() > s.size())
+        {
+            return {};
+        }
+        vector<int> result;
+        unordered_map<char, int> p_map;
+        for (char &ch : p)
+        {
+            p_map[ch] += 1;
+        }
+        int left = 0;
+        for (int right = 0; right < s.size(); right += 1)
+        {
+            p_map[s[right]] -= 1;
+            while (p_map[s[right]] < 0)
+            {
+                p_map[s[left]] += 1;
+                left += 1;
+            }
+            if (right - left + 1 == p.size())
+            {
+                result.push_back(left);
+            }
+        }
+        return result;
     }
-    int left = 0;
-    for (int right = 0; right < s.size(); right += 1)
-    {
-      p_map[s[right]] -= 1;
-      while (p_map[s[right]] < 0)
-      {
-        p_map[s[left]] += 1;
-        left += 1;
-      }
-      if (right - left + 1 == p.size())
-      {
-        result.push_back(left);
-      }
-    }
-
-    return result;
-  }
 };
-
 int main()
 {
-  string s = "cbaebabacd";
-  string p = "abc";
-  string s1 = "eklpyqrbgjdwtcaxzsnifvhmoueklpyqrbgjdwtcaxzsnifvhmoueklpyqrbg";
-  string p1 = "yqrbgjdwtcaxzsnifvhmou";
-  Solution sol;
-  vector<int> result = sol.findAnagrams(s, p);
-  for (int i = 0; i < result.size(); i++)
-  {
-    cout << result[i] << " ";
-  }
-  cout << endl;
-  vector<int> result1 = sol.findAnagrams(s1, p1);
-  for (int i = 0; i < result1.size(); i++)
-  {
-    cout << result1[i] << " ";
-  }
-  cout << endl;
-  return 0;
+    string s = "cbaebabacd";
+    string p = "abc";
+    Solution solution;
+    vector<int> result = solution.findAnagrams(s, p);
+    for (int i = 0; i < result.size(); i++)
+    {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+    return 0;
 }

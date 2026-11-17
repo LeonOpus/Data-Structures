@@ -1,4 +1,4 @@
-﻿/*
+/*
   所谓滑动窗口，就是不断的调节子序列的起始位置和终止位置，从而得出我们要想的结果。
   在暴力解法中，是一个for循环滑动窗口的起始位置，一个for循环为滑动窗口的终止位置，用两个for循环完成了一个不断搜索区间的过程。
   那么滑动窗口如何用一个for循环来完成这个操作呢。
@@ -48,25 +48,49 @@ using namespace std;
 class Solution
 {
 public:
-  int minSubArrayLen(int target, vector<int> &nums)
-  {
-    return 0;
-  }
+    int minSubArrayLen(int target, vector<int> &nums)
+    {
+        if (nums.size() == 0)
+        {
+            return 0;
+        }
+        int left = 0;
+        int sum = 0;
+        int result = INT_MAX;   
+       for(int right = 0; right < nums.size(); right += 1)
+        { 
+            sum += nums[right];   // 将右指针指向的元素加入到sum中
+            while (sum >= target) // 当sum大于等于target时，移动左指针
+            {
+                result = min(result, right - left + 1); // 更新result的值
+                sum -= nums[left];                      // 将左指针指向的元素从sum中减去
+                left += 1;                              // 移动左指针
+            }
+        }
+        if (result == INT_MAX)
+        {
+            return 0;
+        }
+        else
+        {
+            return result;
+        }
+    }
 };
-
 int main()
 {
-  vector<int> nums_1 = {2, 3, 1, 2, 4, 3};
-  vector<int> nums_2 = {1, 4, 4};
-  vector<int> nums_3 = {1, 1, 1, 1, 1, 1, 1, 1};
-  vector<int> nums_4 = {1, 2, 3, 4, 5};
-  int target_1 = 7;
-  int target_2 = 4;
-  int target_3 = 11;
-  int target_4 = 11;
-  cout << Solution().minSubArrayLen(target_1, nums_1) << endl;
-  cout << Solution().minSubArrayLen(target_2, nums_2) << endl;
-  cout << Solution().minSubArrayLen(target_3, nums_3) << endl;
-  cout << Solution().minSubArrayLen(target_4, nums_4) << endl;
-  return 0;
+    vector<int> nums_1 = {2, 3, 1, 2, 4, 3};
+    vector<int> nums_2 = {1, 4, 4};
+    vector<int> nums_3 = {1, 1, 1, 1, 1, 1, 1, 1};
+    vector<int> nums_4 = {1, 2, 3, 4, 5};
+    int target_1 = 7;
+    int target_2 = 4;
+    int target_3 = 11;
+    int target_4 = 11;
+    Solution solution;
+    cout << solution.minSubArrayLen(target_1, nums_1) << endl;
+    cout << solution.minSubArrayLen(target_2, nums_2) << endl;
+    cout << solution.minSubArrayLen(target_3, nums_3) << endl;
+    cout << solution.minSubArrayLen(target_4, nums_4) << endl;
+    return 0;
 }

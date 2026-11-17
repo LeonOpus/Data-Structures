@@ -55,8 +55,7 @@ public:
             }
             while (valid == t_map.size()) // 当所有字符都匹配时有效计数即为t_map的size，收缩左边界
             {
-                // 这是一个有效的覆盖子串，首先计算当前窗口长度，并更新最小窗口信息
-                if (right - left + 1 < length)
+                if (right - left + 1 < length) // 这是一个有效的覆盖子串，首先计算当前窗口长度，并更新最小窗口信息
                 {
                     length = right - left + 1;
                     begin = left; // 记录最小窗口的起始位置

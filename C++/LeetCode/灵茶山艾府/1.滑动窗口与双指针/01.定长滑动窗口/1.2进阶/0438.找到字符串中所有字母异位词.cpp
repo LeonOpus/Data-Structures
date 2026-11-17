@@ -32,16 +32,16 @@ public:
             return {};
         }
         vector<int> result;
-        int k = p.size();
         unordered_map<char, int> s_map;
         unordered_map<char, int> p_map;
+        int k = p.size();
         // 处理第一个窗口
         for (int i = 0; i < k; i += 1)
         {
             s_map[s[i]] += 1;
             p_map[p[i]] += 1;
         }
-        if (s_map == p_map) // 检查第一个窗口是否符合
+        if (s_map == p_map)
         {
             result.push_back(0);
         }
