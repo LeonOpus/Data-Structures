@@ -1,77 +1,70 @@
 /*
-给你一个整数数组 nums 和一个整数 k。
-如果一个数组的 最大 元素的值 至多 是其 最小 元素的 k倍，则该数组被称为是平衡的。 
-你可以从 nums 中移除 任意数量的元素，但不能使其变为 空 数组。
-返回为了使剩余数组平衡，需要移除的元素的最小数量。 
-注意：大小为 1的数组被认为是平衡的，因为其最大值和最小值相等，且条件总是成立。
+给定正整数数组 nums 和正整数 k。
+可以删掉任意位置的元素，至少要保留一个元素。
+若剩余元素的最大值不超过最小值的 k 倍，则剩余数组是平衡的。
+返回让数组变平衡所需的最少删除次数。
 
-示例 1:
+示例 1：
 输入：nums = [2,1,5], k = 2
 输出：1
-解释：
-移除 nums[2] = 5 得到 nums = [2, 1]。
-现在 max = 2, min = 1，且 max <= min * k，因为 2 <= 1 * 2。因此，答案是 1。
+解释：删掉 5 后，剩余最大值 2 恰好是最小值 1 的两倍。
 
-示例 2:
+示例 2：
 输入：nums = [1,6,2,9], k = 3
 输出：2
-解释：
-移除 nums[0] = 1 和 nums[3] = 9 得到 nums = [6, 2]。
-现在 max = 6, min = 2，且 max <= min * k，因为 6 <= 2 * 3。因此，答案是 2。
+解释：可以保留 6 和 2。
 
-示例 3:
+示例 3：
 输入：nums = [4,6], k = 2
 输出：0
-解释：
-由于 nums 已经平衡，因为 6 <= 4 * 2，所以不需要移除任何元素。
 
-思路：
-我们只关心剩余元素的最小值和最大值，不关心元素的顺序，所以可以先从小到大排序，方便后续计算。
-排序后，枚举最大值 max=nums[right]，那么最小值 min=nums[left] 必须满足min*k≥max
-如果不满足，由于我们排序了，可以把 left 加一，直到满足上式。
-可见，随着 right 的增大，left 要么不变，要么也增大
-用窗口长度 right−left+1 更新保留元素个数的窗口最大值 max_len
-最终答案为 nums.size()-max_len
+提示：
+1 <= nums.length <= 10^5
+1 <= nums[i] <= 10^9
+1 <= k <= 10^5
+
+题目链接：https://leetcode.cn/problems/minimum-removals-to-balance-array/
 */
 #include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
+
+// 固定保留元素的最小值和最大值后，保留夹在两者之间的元素仍然平衡。
+// 对 nums 原地排序，寻找最长的连续合法区间，答案就是总长度减去该区间长度。
+// 最小值乘 k 可能超过 int 范围，比较时使用 long long。
+// 排序耗时 O(n log n)，滑动窗口耗时 O(n)，窗口只用常数额外空间。
 class Solution
 {
 public:
-  int minRemoval(vector<int> &nums, int k)
-  {
-    if (nums.size() == 1)
-      return 0;
-    sort(nums.begin(), nums.end());
-    int result = 0;
-    int left = 0;
-    int max_len = 0;
-    for (int right = 0; right < nums.size(); right += 1)
+    int minRemoval(vector<int> &nums, int k)
     {
-      long maxNum = nums[right];
-      long minNum = nums[left];
-      if (minNum * k < maxNum)
-      {
-        left += 1;
-      }
-      max_len = max(max_len, right - left + 1);
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int left = 0;
+        int longest = 0;
+        for (int right = 0; right < n; right += 1)
+        {
+            while (nums[right] > 1LL * nums[left] * k)
+            {
+                left += 1;
+            }
+            longest = max(longest, right - left + 1);
+        }
+        return n - longest;
     }
-    return nums.size() - max_len;
-  }
 };
+
 int main()
 {
-  Solution s;
-  vector<int> nums = {4, 6};
-  int k = 2;
-  cout << s.minRemoval(nums, k) << endl;
-  nums = {1, 6, 2, 9};
-  k = 3;
-  cout << s.minRemoval(nums, k) << endl;
-  nums = {2, 1, 5};
-  k = 2;
-  cout << s.minRemoval(nums, k) << endl;
-  return 0;
+    Solution sol;
+    vector<int> nums = {2, 1, 5};
+    cout << sol.minRemoval(nums, 2) << endl;
+    nums = {1, 6, 2, 9};
+    cout << sol.minRemoval(nums, 3) << endl;
+    nums = {4, 6};
+    cout << sol.minRemoval(nums, 2) << endl;
+    nums = {1000000000, 100000000};
+    cout << sol.minRemoval(nums, 100000) << endl;
+    return 0;
 }

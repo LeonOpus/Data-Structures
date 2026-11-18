@@ -8,27 +8,49 @@
 示例 2：
 输入：nums = [1,2,3], k = 0
 输出：0
+
+题目链接：https://leetcode.cn/problems/subarray-product-less-than-k/
  */
 #include <vector>
 #include <iostream>
 using namespace std;
+
+// 元素都是正整数。乘积达到 k 时右移左端，直到窗口重新合法。
+// 固定右端后，窗口内的任意位置都可作为合法起点。
+// 时间复杂度 O(n)，额外空间复杂度 O(1)。
 class Solution
 {
 public:
-    int numSubarraytotalLessThanK(vector<int> &nums, int k)
+    int numSubarrayProductLessThanK(vector<int> &nums, int k)
     {
-        int result = 0;
+        if (k <= 1)
+        {
+            return 0;
+        }
+        int n = nums.size();
         int left = 0;
-        int total = 1;
+        long long product = 1;
+        int result = 0;
+        for (int right = 0; right < n; right += 1)
+        {
+            product *= nums[right];
+            while (product >= k)
+            {
+                product /= nums[left];
+                left += 1;
+            }
+            result += right - left + 1;
+        }
         return result;
     }
 };
 int main()
 {
-    Solution s;
+    Solution sol;
     vector<int> nums = {10, 5, 2, 6};
-    int k = 100;
-    int result = s.numSubarraytotalLessThanK(nums, k);
-    cout << result << endl;
+    cout << sol.numSubarrayProductLessThanK(nums, 100) << endl;
+    nums = {1, 2, 3};
+    cout << sol.numSubarrayProductLessThanK(nums, 0) << endl;
+    cout << sol.numSubarrayProductLessThanK(nums, 1) << endl;
     return 0;
 }

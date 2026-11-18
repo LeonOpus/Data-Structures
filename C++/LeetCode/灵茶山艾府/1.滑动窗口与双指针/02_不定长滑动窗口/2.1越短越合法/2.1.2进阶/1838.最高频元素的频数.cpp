@@ -20,18 +20,45 @@
 输入：nums = [3,9,6], k = 2
 输出：1
 */
+#include <algorithm>
 #include <iostream>
 #include <vector>
 using namespace std;
+
+// 排序后，固定目标值 nums[right]，优先增加离它最近的元素。
+// 把窗口内元素都增到 nums[right] 的开销等于目标值乘窗口长度减窗口和。
+// 排序耗时 O(n log n)，滑动窗口耗时 O(n)，窗口额外空间 O(1)。
 class Solution
 {
 public:
     int maxFrequency(vector<int> &nums, int k)
     {
-        
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        int left = 0;
+        int result = 0;
+        long long sum = 0;
+        for (int right = 0; right < n; right += 1)
+        {
+            sum += nums[right];
+            while (1LL * nums[right] * (right - left + 1) - sum > k)
+            {
+                sum -= nums[left];
+                left += 1;
+            }
+            result = max(result, right - left + 1);
+        }
+        return result;
     }
 };
 int main()
 {
+    Solution sol;
+    vector<int> nums = {1, 2, 4};
+    cout << sol.maxFrequency(nums, 5) << endl;
+    nums = {1, 4, 8, 13};
+    cout << sol.maxFrequency(nums, 5) << endl;
+    nums = {3, 9, 6};
+    cout << sol.maxFrequency(nums, 2) << endl;
     return 0;
 }

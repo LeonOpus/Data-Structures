@@ -24,32 +24,36 @@ s 是一个半重复字符串。
 解释：
 最长的半重复子字符串是 "11"。子字符串 "111" 有两个相邻的相同数字对，但最多允许选取一个。
 */
+#include <algorithm>
 #include <iostream>
+#include <string>
 using namespace std;
+
+// 右端形成第二对相等相邻字符时，移动左端，直到移出第一对。
+// 两个指针都只向右移动，时间复杂度 O(n)，窗口额外空间 O(1)。
 class Solution
 {
 public:
     int longestSemiRepetitiveSubstring(string s)
     {
-        if (s.size() == 1)
-            return 1;
-        int result = 0;
+        int n = s.size();
+        int result = 1;
         int left = 0;
-        int vaild = 0;
-        for (int right = 1; right < s.size(); right += 1)
+        int equalPairs = 0;
+        for (int right = 1; right < n; right += 1)
         {
             if (s[right] == s[right - 1])
             {
-                vaild += 1;
+                equalPairs += 1;
             }
-            if (vaild > 1) // vaild == 2
+            if (equalPairs > 1)
             {
                 left += 1;
                 while (s[left] != s[left - 1])
                 {
                     left += 1;
                 }
-                vaild = 1;
+                equalPairs = 1;
             }
             result = max(result, right - left + 1);
         }
@@ -58,5 +62,9 @@ public:
 };
 int main()
 {
+    Solution sol;
+    cout << sol.longestSemiRepetitiveSubstring("52233") << endl;
+    cout << sol.longestSemiRepetitiveSubstring("5494") << endl;
+    cout << sol.longestSemiRepetitiveSubstring("1111111") << endl;
     return 0;
 }

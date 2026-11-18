@@ -23,20 +23,40 @@
 数组 nums 的美丽值是 4（整个数组）。
 */
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <unordered_map>
 using namespace std;
+
+// 若一组元素能改成同一个数，它们允许修改的区间必须有公共交集。
+// 排序后，窗口内最大值与最小值之差不超过 2 * k 时，交集非空。
+// 排序耗时 O(n log n)，滑动窗口耗时 O(n)，窗口额外空间 O(1)。
 class Solution
 {
 public:
     int maximumBeauty(vector<int> &nums, int k)
     {
-        int result = 0;
-        unordered_map<int, int> numMap;
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
         int left = 0;
+        int result = 0;
+        for (int right = 0; right < n; right += 1)
+        {
+            while (nums[right] - nums[left] > 2 * k)
+            {
+                left += 1;
+            }
+            result = max(result, right - left + 1);
+        }
+        return result;
     }
 };
-int main() {
+int main()
+{
+    Solution sol;
+    vector<int> nums = {4, 6, 1, 2};
+    cout << sol.maximumBeauty(nums, 2) << endl;
+    nums = {1, 1, 1, 1};
+    cout << sol.maximumBeauty(nums, 10) << endl;
     return 0;
 }

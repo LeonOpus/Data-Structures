@@ -1,61 +1,70 @@
 /*
-给你一个正整数数组 nums ，请你从中删除一个含有 若干不同元素 的子数组。
-删除子数组的 得分 就是子数组各元素之 和 。
-返回 只删除一个 子数组可获得的 最大得分 。
-如果数组 b 是数组 a 的一个连续子序列，
-即如果它等于 a[l],a[l+1],...,a[r] ，那么它就是 a 的一个子数组。
+从正整数数组 nums 中选出一个连续子数组并删除。
+所选子数组的元素必须互不相同，得分为这些元素的和。
+返回删除一个符合要求的子数组能得到的最高分。
 
 示例 1：
 输入：nums = [4,2,4,5,6]
 输出：17
-解释：最优子数组是 [2,4,5,6]
+解释：选择 [2,4,5,6]，和为 17。
 
 示例 2：
 输入：nums = [5,2,1,2,5,2,1,2,5]
 输出：8
-解释：最优子数组是 [5,2,1] 或 [1,2,5]
+解释：[5,2,1] 和 [1,2,5] 都能得到 8 分。
 
 提示：
-1 <= nums.length <= 105
-1 <= nums[i] <= 104
+1 <= nums.length <= 10^5
+1 <= nums[i] <= 10^4
+
+题目链接：https://leetcode.cn/problems/maximum-erasure-value/
 */
+#include <algorithm>
 #include <iostream>
-#include <numeric>
-#include <unordered_map>
 #include <vector>
 using namespace std;
+
+// 用频次数组判断重复，同时维护窗口的元素和。
+// 右端加入的数重复时，左端向右移动到重复消除为止。
+// 所有元素为正数，固定右端时，最长的合法窗口也有最大的和。
+// 设 U 为元素值域上界 10^4，时间复杂度 O(n + U)，额外空间复杂度 O(U)。
 class Solution
 {
 public:
-  int maximumUniqueSubarray(vector<int> &nums)
-  {
-    int result = 0;
-    int total = 0;
-    unordered_map<int, int> numMap;
-    int left = 0;
-    for (int right = 0; right < nums.size(); right += 1)
+    int maximumUniqueSubarray(vector<int> &nums)
     {
-      numMap[nums[right]]++;
-      total += nums[right];
-      while (numMap[nums[right]] > 1)
-      {
-        numMap[nums[left]]--;
-        total -= nums[left];
-        left += 1;
-      }
-      result = max(result, total);
+        const int maxValue = 10000;
+        int count[maxValue + 1] = {};
+        int n = nums.size();
+        int left = 0;
+        int sum = 0;
+        int result = 0;
+        for (int right = 0; right < n; right += 1)
+        {
+            int incoming = nums[right];
+            count[incoming] += 1;
+            sum += incoming;
+            while (count[incoming] > 1)
+            {
+                int outgoing = nums[left];
+                count[outgoing] -= 1;
+                sum -= outgoing;
+                left += 1;
+            }
+            result = max(result, sum);
+        }
+        return result;
     }
-    return result;
-  }
 };
+
 int main()
 {
-  vector<int> nums = {4, 2, 4, 5, 6};
-  Solution s;
-  cout << s.maximumUniqueSubarray(nums) << endl;
-  nums = {5, 2, 1, 2, 5, 2, 1, 2, 5};
-  cout << s.maximumUniqueSubarray(nums) << endl;
-  nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  cout << s.maximumUniqueSubarray(nums) << endl;
-  return 0;
+    Solution sol;
+    vector<int> nums = {4, 2, 4, 5, 6};
+    cout << sol.maximumUniqueSubarray(nums) << endl;
+    nums = {5, 2, 1, 2, 5, 2, 1, 2, 5};
+    cout << sol.maximumUniqueSubarray(nums) << endl;
+    nums = {10000, 10000, 10000};
+    cout << sol.maximumUniqueSubarray(nums) << endl;
+    return 0;
 }

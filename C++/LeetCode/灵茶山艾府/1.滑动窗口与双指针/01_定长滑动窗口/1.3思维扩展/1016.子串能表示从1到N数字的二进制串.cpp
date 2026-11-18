@@ -86,8 +86,7 @@ public:
             power *= 2;
             length += 1;
         }
-        return checkRange(s, length, power, n) &&
-               checkRange(s, length - 1, n / 2 + 1, power - 1);
+        return checkRange(s, length, power, n) &&checkRange(s, length - 1, n / 2 + 1, power - 1);
     }
 };
 
