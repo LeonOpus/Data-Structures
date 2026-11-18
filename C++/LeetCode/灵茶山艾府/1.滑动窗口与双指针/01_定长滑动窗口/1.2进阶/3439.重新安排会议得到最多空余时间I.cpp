@@ -31,10 +31,55 @@ n == startTime.length == endTime.length
 endTime[i] <= startTime[i + 1] 其中 i 在范围 [0, n - 2] 之间。
 */
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
+
+// 移动连续的 k 个会议，可以把它们两侧共 k + 1 段空闲时间合并。
+// 枚举这 k + 1 段空闲时间的总和，取最大值即可。
+// gap(i) 按需计算第 i 段空闲时间，包含活动开始前和结束后的两段。
+// 时间复杂度 O(n)，额外空间复杂度 O(1)。
+class Solution
+{
+public:
+    int maxFreeTime(int eventTime, int k, vector<int> &startTime, vector<int> &endTime)
+    {
+        int n = startTime.size();
+        auto gap = [&](int i)
+        {
+            int leftEnd = i == 0 ? 0 : endTime[i - 1];
+            int rightStart = i == n ? eventTime : startTime[i];
+            return rightStart - leftEnd;
+        };
+        int sum = 0;
+        // 处理第一个窗口：移动前 k 个会议，合并前 k + 1 段空闲时间
+        for (int i = 0; i <= k; i += 1)
+        {
+            sum += gap(i);
+        }
+        int result = sum;
+        // 处理后续窗口
+        for (int i = k + 1; i <= n; i += 1)
+        {
+            sum += gap(i);
+            sum -= gap(i - k - 1);
+            result = max(result, sum);
+        }
+        return result;
+    }
+};
 
 int main()
 {
-    
+    Solution sol;
+    vector<int> startTime = {1, 3};
+    vector<int> endTime = {2, 5};
+    cout << sol.maxFreeTime(5, 1, startTime, endTime) << endl;
+    startTime = {0, 2, 9};
+    endTime = {1, 4, 10};
+    cout << sol.maxFreeTime(10, 1, startTime, endTime) << endl;
+    startTime = {0, 1, 2, 3, 4};
+    endTime = {1, 2, 3, 4, 5};
+    cout << sol.maxFreeTime(5, 2, startTime, endTime) << endl;
     return 0;
 }

@@ -52,7 +52,7 @@ public:
             }
             if (map_s == map_p) // 比较当前窗口map_s 和 map_p 是否相等
             {
-                result.push_back(i - k + 1); // 添加正确的起始索引
+                result.push_back(i - k + 1); // 添加起始索引是i - k + 1
             }
         }
         return result;

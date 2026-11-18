@@ -30,7 +30,6 @@ public:
         backtracking(0, nums, k, target, used, path, result);
         return result.size() == k;
     }
-
     void backtracking(int start, vector<int> &nums, int k, int target, vector<bool> &used, vector<int> &path, vector<vector<int>> &result)
     {
         int currentSum = accumulate(path.begin(), path.end(), 0);

@@ -26,65 +26,69 @@ using namespace std;
 class Solution
 {
 public:
-  // 方法 : 单调队列
-  vector<int> maxSlidingWindow(vector<int> &nums, int k)
-  {
-    MyQueue deque;
-    vector<int> result;
-    for (int i = 0; i < k; i += 1)
+    // 方法 : 单调队列
+    vector<int> maxSlidingWindow(vector<int> &nums, int k)
     {
-      deque.push(nums[i]); // 先将前k的元素放进队列
+        MyQueue deque;
+        vector<int> result;
+        for (int i = 0; i < k; i += 1)
+        {
+            deque.push(nums[i]); // 先将前k的元素放进队列
+        }
+        result.push_back(deque.front()); // result 记录前k的元素的最大值
+        for (int i = k; i < nums.size(); i += 1)
+        {
+            deque.push(nums[i]);             // 滑动窗口前加入最后面的元素
+            deque.pop(nums[i - k]);          // 滑动窗口移除最前面元素
+            result.push_back(deque.front()); // 记录对应的最大值
+        }
+        return result;
     }
-    result.push_back(deque.front()); // result 记录前k的元素的最大值
-    for (int i = k; i < nums.size(); i += 1)
+    class MyQueue // 单调队列（从大到小）
     {
-      deque.push(nums[i]);             // 滑动窗口前加入最后面的元素
-      deque.pop(nums[i - k]);          // 滑动窗口移除最前面元素
-      result.push_back(deque.front()); // 记录对应的最大值
-    }
-    return result;
-  }
-  class MyQueue // 单调队列（从大到小）
-  {
-  public:
-    // 使用deque来实现单调队列
-    // 每次弹出的时候，比较当前要弹出的数值是否等于队列出口元素的数值，如果相等则弹出。
-    // 同时pop之前判断队列当前是否为空。
-    deque<int> deque;
-    void pop(int value)
-    {
-      if (!deque.empty() && value == deque.front())
-      {
-        deque.pop_front();
-      }
-    }
-    // 如果push的数值大于入口元素的数值，那么就将队列后端的数值弹出，
-    // 直到push的数值小于等于队列入口元素的数值为止。
-    // 这样就保持了队列里的数值是单调从大到小。
-    void push(int value)
-    {
-      while (!deque.empty() && value > deque.back())
-      {
-        deque.pop_back();
-      }
-      deque.push_back(value);
-    }
-    // 查询当前队列里的最大值 直接返回队列前端也就是front就可以了。
-    int front()
-    {
-      return deque.front();
-    }
-  };
+    public:
+        // 使用deque来实现单调队列
+        // 每次弹出的时候，比较当前要弹出的数值是否等于队列出口元素的数值，如果相等则弹出。
+        // 同时pop之前判断队列当前是否为空。
+        deque<int> deq;
+        void pop(int value)
+        {
+            if (!deq.empty() && value == deq.front())
+            {
+                deq.pop_front();
+            }
+        }
+        // 如果push的数值大于入口元素的数值，那么就将队列后端的数值弹出，
+        // 直到push的数值小于等于队列入口元素的数值为止。
+        // 这样就保持了队列里的数值是单调从大到小。
+        void push(int value)
+        {
+            while (!deq.empty() && value > deq.back())
+            {
+                deq.pop_back();
+            }
+            deq.push_back(value);
+        }
+        // 查询当前队列里的最大值 直接返回队列前端也就是front就可以了。
+        int front()
+        {
+            return deq.front();
+        }
+    };
 };
 
 int main()
 {
-  Solution s;
-  vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
-  int k = 3;
-  vector<int> nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
-  int k1 = 5000;
-  s.maxSlidingWindow(nums, k);
-
-  return 0;
+    Solution s;
+    vector<int> nums = {1, 3, -1, -3, 5, 3, 6, 7};
+    int k = 3;
+    vector<int> nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
+    int k1 = 5000;
+    vector<int> result = s.maxSlidingWindow(nums, k);
+    for (int i = 0; i < result.size(); i += 1)
+    {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+    return 0;
 }

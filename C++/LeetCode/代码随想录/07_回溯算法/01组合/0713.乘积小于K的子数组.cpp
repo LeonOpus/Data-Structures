@@ -22,7 +22,7 @@ public:
             return 0;
         vector<vector<int>> result;
         vector<int> path;
-        for (int i = 0; i < nums.size(); ++i)
+        for (int i = 0; i < nums.size(); i+= 1)
         {
             backtracking(i, 1, nums, k, path, result);
         }
