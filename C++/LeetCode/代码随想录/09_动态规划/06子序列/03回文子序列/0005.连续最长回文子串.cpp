@@ -59,11 +59,14 @@ public:
                     if (j - i > 1)
                         dp[i][j] = dp[i + 1][j - 1];
                 }
-                if (s[i] != s[j])
+                else if (s[i] != s[j]){
                     dp[i][j] = false;
-                if (dp[i][j] == true)
+                }
+                if (dp[i][j] == true){
                     if (j - i + 1 > result.size())
                         result = s.substr(i, j - i + 1);
+                }
+
             }
         }
         return result;

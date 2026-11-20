@@ -1,12 +1,48 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "ListNode.h"
+// #include "ListNode.h"
 using namespace std;
 /*
 描述
 合并 k 个升序的链表并将结果作为一个升序的链表返回其头节点。
+
 */
+// 创建链表结构
+struct ListNode
+{
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+};
+// 通过数组创建链表
+ListNode *createListNode(const std::vector<int> &arr)
+
+{
+    if (arr.size() == 0)
+        return nullptr;
+    ListNode *dummy = new ListNode(-1);
+    ListNode *head = new ListNode(arr[0]); // 创建头节点
+    dummy->next = head;                    // 临时指针指向头节点
+    for (int i = 1; i < arr.size(); ++i)
+    {
+        head->next = new ListNode(arr[i]); // 创建新节点并链接到当前节点后面
+        head = head->next;                 // 临时指针后移
+    }
+    return dummy->next; // 返回链表头节点
+}
+// 遍历并打印链表
+void printListNode(ListNode *head)
+{
+    ListNode *temp = head;
+    while (temp != nullptr)
+    {
+        cout << temp->val << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
 class Solution
 {
 public:

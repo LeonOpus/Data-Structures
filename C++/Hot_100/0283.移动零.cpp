@@ -30,22 +30,6 @@ public:
         {
             nums[i] = 0;
         }
-        // 方法二
-        int left = 0;
-        int right = 0;
-        while (right < nums.size())
-        {
-            if (nums[right] != 0)
-            {
-                nums[left] = nums[right];
-                left += 1;
-            }
-            right += 1;
-        }
-        for (int i = left; i < nums.size(); i += 1)
-        {
-            nums[i] = 0;
-        }
         return;
     }
 };

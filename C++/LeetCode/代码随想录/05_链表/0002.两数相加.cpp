@@ -14,7 +14,12 @@
 输出：[8,9,9,9,0,0,0,1]
  */
 #include "ListNode.h"
-
+// struct ListNode
+// {
+//     int val;
+//     ListNode *next;
+//     ListNode(int val, ListNode *next) {}
+// };
 class Solution
 {
 public:

@@ -45,15 +45,7 @@ public:
             while (left < right)
             {
                 int sum = nums[i] + nums[left] + nums[right];
-                if (sum < 0)
-                {
-                    left += 1;
-                }
-                else if (sum > 0)
-                {
-                    right -= 1;
-                }
-                else if (sum == 0)
+                if (sum == 0)
                 {
                     path = {nums[i], nums[left], nums[right]};
                     result.push_back(path);
@@ -66,8 +58,16 @@ public:
                     {
                         right -= 1;
                     }
-                    // 找到答案后，双指针同时收缩
+                    // 找到答案后，双指针同时移动
                     left += 1;
+                    right -= 1;
+                }
+                else if (sum < 0)
+                {
+                    left += 1;
+                }
+                else if (sum > 0)
+                {
                     right -= 1;
                 }
             }
