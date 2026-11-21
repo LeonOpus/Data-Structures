@@ -37,7 +37,10 @@ public:
             cur->next = list1;
         if (list2)
             cur->next = list2;
-        return dummy->next;
+        ListNode *result = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+        return result;
     }
 };
 

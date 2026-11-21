@@ -38,9 +38,11 @@ public:
                     meet = meet->next;
                     result = result->next;
                     if (meet == result)
+                    {
                         return result;
+                    }
                 }
-                //return result; 
+                return result;
             }
         }
         return nullptr;

@@ -20,6 +20,10 @@ public:
     */
     ListNode *partition(ListNode *head, int x)
     {
+        if (!head)
+        {
+            return nullptr;
+        }
         ListNode *dummy1 = new ListNode(0);
         ListNode *dummy2 = new ListNode(0);
         ListNode *cur1 = dummy1;
@@ -31,16 +35,21 @@ public:
                 cur1->next = head;
                 cur1 = cur1->next;
             }
-            else if (head->val >= x)
+            else
             {
                 cur2->next = head;
                 cur2 = cur2->next;
             }
             head = head->next;
         }
-        cur2->next = nullptr;
-        cur1->next = dummy2->next;
-        return dummy1->next;
+        cur2->next = nullptr;      // cur2已经走到尽头，尽头得有明确的指向，计算机既认为这个链表是建立完全的
+        cur1->next = dummy2->next; // cur1的尽头衔接上cur2的头节点，即dummy2->next,而不是cur2,
+        ListNode *result = dummy1->next;
+        delete dummy1;
+        delete dummy2;
+        dummy1 = nullptr;
+        dummy2 = nullptr;
+        return result;
     }
 };
 

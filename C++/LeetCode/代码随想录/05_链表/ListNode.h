@@ -27,15 +27,18 @@ ListNode *createListNode(const vector<int> &arr)
 
 {
     if (arr.size() == 0)
-        return nullptr;
-    ListNode *head = new ListNode(arr[0]); // 创建头节点
-    ListNode *temp = head;                 // 临时指针指向头节点
-    for (int i = 1; i < arr.size(); ++i)
     {
-        temp->next = new ListNode(arr[i]); // 创建新节点并链接到当前节点后面
-        temp = temp->next;                 // 临时指针后移
+        return nullptr;
     }
-    return head; // 返回链表头节点
+    ListNode *head = new ListNode(arr[0]);
+    ListNode *cur = head;
+    for (int i = 1; i < arr.size(); i += 1)
+    {
+        ListNode *node = new ListNode(arr[i]);
+        cur->next = node;
+        cur = cur->next;
+    }
+    return head;
 }
 // 遍历并打印链表
 void printListNode(ListNode *head)
@@ -43,7 +46,7 @@ void printListNode(ListNode *head)
     ListNode *temp = head;
     while (temp != nullptr)
     {
-        cout << (*temp).val  << " ";
+        cout << (*temp).val << " ";
         temp = temp->next;
     }
     cout << endl;

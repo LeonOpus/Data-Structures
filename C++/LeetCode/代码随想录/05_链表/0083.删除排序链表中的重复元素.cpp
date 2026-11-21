@@ -14,18 +14,20 @@ class Solution
 public:
     ListNode *deleteDuplicates(ListNode *head)
     {
-        if (head == nullptr)
+        if (!head)
+        {
             return nullptr;
+        }
         ListNode *dummy = new ListNode(0);
         dummy->next = head;
         ListNode *cur = dummy;
         while (cur->next && cur->next->next)
         {
-            if (cur->next->val == cur->next->next->val)
+            if (cur->next->val == cur->next->next->val) // 第一个节点和第二个节点的值相同，保留第一个节点
             {
-                int value = cur->next->val; // 将value获取移至此处，更清晰
-                ListNode *node = cur->next;
-                while (node->next && node->next->val == value)
+                int value = cur->next->val; // 获取当前节点的值
+                ListNode *node = cur->next; // 获取当前节点
+                while (node->next && node->next->val == value) //会保留当前节点（即重复值的节点会保留第一个)
                 {
                     ListNode *del_node = node;
                     node = node->next;
@@ -39,6 +41,7 @@ public:
         }
         ListNode *result = dummy->next; // 保存结果指针
         delete dummy;                   // 释放dummy节点，防止内存泄漏
+        dummy = nullptr;
         return result;
     }
 };

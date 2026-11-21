@@ -33,7 +33,10 @@ public:
             node_1->next = node_3;       // 1->3
             cur = cur->next->next;       // cur移动到原来2的位置 然后对原来的34进行操作
         }
-        return dummy->next;
+        ListNode *result = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+        return result;
     }
 };
 

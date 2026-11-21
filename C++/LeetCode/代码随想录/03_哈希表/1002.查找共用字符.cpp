@@ -24,7 +24,9 @@ public:
         vector<string> result;
         result.push_back(words[0]);
         for (const string &word : words)
+        {
             result = common_element(result, word);
+        }
         return result;
     }
     vector<string> common_element(vector<string> result, string str2)
@@ -37,7 +39,7 @@ public:
         unordered_map<char, int> map;
         for (char &ch : str1)
         {
-            map[ch]++;
+            map[ch] += 1;
         }
         result.clear();
         for (char &ch : str2)
@@ -45,7 +47,7 @@ public:
             if (map[ch] > 0)
             {
                 result.push_back(string(1, ch));
-                map[ch]--;
+                map[ch] -= 1;
             }
         }
         return result;

@@ -11,7 +11,6 @@
 #include <iostream>
 using namespace std;
 
-
 class Solution
 {
 public:
@@ -27,7 +26,9 @@ public:
             else if (ch == '}' || ch == ')' || ch == ']')
             {
                 if (chStack.empty())
+                {
                     return false;
+                }
                 else if (!chStack.empty())
                 {
                     char top = chStack.top();

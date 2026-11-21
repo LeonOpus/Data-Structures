@@ -50,12 +50,14 @@ public:
     int get(int index)
     {
         if (size - 1 < index || index < 0)
+        {
             return -1;
+        }
         ListNode *cur = dummy->next;
         while (index > 0)
         {
             cur = cur->next;
-            index--;
+            index -= 1;
         }
         return cur->val;
     }
@@ -65,7 +67,7 @@ public:
         ListNode *node = new ListNode(val);
         node->next = dummy->next;
         dummy->next = node;
-        size++;
+        size += 1;
     }
 
     void addAtTail(int val)
@@ -75,7 +77,7 @@ public:
         while (cur && cur->next)
             cur = cur->next;
         cur->next = node;
-        size++;
+        size += 1;
     }
 
     void addAtIndex(int index, int val)
@@ -88,12 +90,12 @@ public:
         ListNode *cur = dummy;
         while (index > 0)
         {
-            index--;
+            index -= 1;
             cur = cur->next;
         }
         node->next = cur->next;
         cur->next = node;
-        size++;
+        size += 1;
     }
 
     void deleteAtIndex(int index)

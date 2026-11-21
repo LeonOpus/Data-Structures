@@ -27,7 +27,7 @@ public:
     {
         ListNode *dummy = new ListNode(0);
         ListNode *cur = dummy;
-        int sum;       // 两数之和
+        int sum = 0;   // 两数之和
         int quotient;  // 商数
         int remainder; // 余数
         int carry = 0; // 进位
@@ -72,7 +72,10 @@ public:
             cur->next = node;
             cur = cur->next;
         }
-        return dummy->next;
+        ListNode *result = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+        return result;
     }
 };
 

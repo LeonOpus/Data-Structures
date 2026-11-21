@@ -21,9 +21,9 @@ public:
         {
             if (cur->next->val == cur->next->next->val)
             {
+                int value = cur->next->val;
                 ListNode *node = cur->next;
-                int value = node->val;
-                while (node && node->val == value)
+                while (node && node->val == value) // 不会保留当前节点（即重复值的节点全部删除)
                 {
                     ListNode *del_node = node;
                     node = node->next;
@@ -35,7 +35,10 @@ public:
             else
                 cur = cur->next;
         }
-        return dummy->next;
+        ListNode *result = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+        return result;
 
         // 方法二： 使用双指针
         // ListNode *dummy = new ListNode(0);

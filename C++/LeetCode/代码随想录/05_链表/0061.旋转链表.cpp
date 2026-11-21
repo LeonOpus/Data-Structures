@@ -35,7 +35,7 @@ public:
         }
         return pre;
     }
-    ListNode *reverseBetween(ListNode *head, int left, int right)
+    ListNode *reverseBetween(ListNode *head, int left, int right) // 两两交换链表中相邻的节点
     {
         ListNode *dummy = new ListNode(0);
         ListNode *pre = dummy;
@@ -58,13 +58,15 @@ public:
     int getListLength(ListNode *head)
     {
         if (head == nullptr)
+        {
             return 0;
+        }
         int length = 0;
         ListNode *cur = head;
         while (cur)
         {
             cur = cur->next;
-            length++;
+            length += 1;
         }
         return length;
     }

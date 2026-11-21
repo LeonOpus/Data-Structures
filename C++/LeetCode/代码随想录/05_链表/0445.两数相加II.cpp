@@ -64,7 +64,10 @@ public:
             cur = cur->next;
         }
         dummy->next = reverseListNode(dummy->next);
-        return dummy->next;
+        ListNode *result = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+        return result;
     }
     ListNode *reverseListNode(ListNode *head)
     {

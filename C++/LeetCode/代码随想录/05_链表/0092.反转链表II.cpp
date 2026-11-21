@@ -14,6 +14,7 @@ class Solution
 public:
     ListNode *reverseBetween(ListNode *head, int left, int right)
     {
+        // 方法一
         ListNode *dummy = new ListNode(0);
         dummy->next = head;
         ListNode *pre = dummy;
@@ -31,6 +32,65 @@ public:
             pre->next = node;       // 0->2
         }
         return dummy->next;
+    }
+
+    ListNode *reverseBetween_2(ListNode *head, int left, int right)
+    {
+        // 方法二
+        if (!head || left == right)
+        {
+            return head;
+        }
+
+        ListNode *dummy = new ListNode(0);
+        dummy->next = head;
+
+        // 1. 找到 left 的前驱节点 pre
+        ListNode *pre = dummy;
+        for (int i = 0; i < left - 1; ++i)
+        {
+            pre = pre->next;
+        }
+
+        // 2. 找到 right 节点 end，并记下后面的节点 after
+        ListNode *end = pre;
+        for (int i = 0; i < right - left + 1; ++i)
+        {
+            end = end->next;
+        }
+        ListNode *start = pre->next;
+        ListNode *after = end->next;
+
+        // 3. 断开子链表并反转
+        end->next = nullptr;
+        reverseListNode(start);
+
+        // 4. 重新拼接
+        pre->next = end;
+        start->next = after;
+
+        ListNode *result = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+        return result;
+    }
+
+    ListNode *reverseListNode(ListNode *head)
+    {
+        if (!head)
+        {
+            return nullptr;
+        }
+        ListNode *pre = nullptr;
+        ListNode *cur = head;
+        while (cur)
+        {
+            ListNode *node = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = node;
+        }
+        return pre;
     }
 };
 
