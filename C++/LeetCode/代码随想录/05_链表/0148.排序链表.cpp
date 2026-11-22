@@ -13,23 +13,23 @@ class Solution
 public:
     ListNode *sortList(ListNode *head)
     {
-        if (head == nullptr)
+        if (!head)
+        {
             return nullptr;
-        vector<int> arr;
-        while (head)
-        {
-            arr.push_back(head->val);
-            head = head->next;
         }
-        sort(arr.begin(), arr.end());
-        ListNode *newHead = new ListNode(arr[0]);
-        ListNode *cur = newHead;
-        for (int i = 1; i < arr.size(); i++)
+    }
+
+    ListNode *sortTwoList(ListNode *l1, ListNode *l2)
+    {
+        if (!l1)
         {
-            cur->next = new ListNode(arr[i]);
-            cur = cur->next;
+            return l2;
         }
-        return newHead;
+        if (!l2)
+        {
+            return l1;
+        }
+        
     }
 };
 

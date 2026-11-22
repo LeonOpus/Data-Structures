@@ -41,7 +41,9 @@ public:
         while (headB)
         {
             if (set.find(headB) != set.end())
+            {
                 return headB;
+            }
             headB = headB->next;
         }
         return nullptr;

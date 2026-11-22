@@ -38,8 +38,8 @@ public:
             head = head->next;
             flag = -flag;
         }
-        even->next = nullptr;
-        odd->next = dummy2->next;
+        even->next = nullptr;     // 尾巴指向nullptr (2 4 4指向nullptr)
+        odd->next = dummy2->next; // 尾巴指向 1 3 5 -> 2 4 （5指向2）
         return dummy1->next;
     }
 };
