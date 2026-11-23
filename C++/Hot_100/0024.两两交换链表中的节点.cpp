@@ -16,18 +16,23 @@ class Solution
 public:
     ListNode *swapPairs(ListNode *head)
     {
-        ListNode dummy(0, head);
-        ListNode *before = &dummy;
-        while (before->next != nullptr && before->next->next != nullptr)
+        if (!head)
         {
-            ListNode *first = before->next;
-            ListNode *second = first->next;
-            first->next = second->next;
-            second->next = first;
-            before->next = second;
-            before = first;
+            return nullptr;
         }
-        return dummy.next;
+        ListNode *dummy = new ListNode(0);
+        dummy->next = head;
+        ListNode *cur = dummy;
+        while (cur->next&&cur->next->next)
+        {
+            ListNode *node_1 = cur->next;
+            ListNode *node_3 = cur->next->next->next;
+            cur->next = cur->next->next; // 0->2
+            cur->next->next = node_1;
+            node_1->next = node_3;
+            cur = cur->next;
+        }
+        return dummy->next;
     }
 };
 

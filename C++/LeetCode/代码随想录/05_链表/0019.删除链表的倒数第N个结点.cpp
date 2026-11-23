@@ -53,6 +53,7 @@ public:
         // 释放 dummy 节点
         ListNode *result = dummy->next;
         delete dummy;
+        dummy = nullptr;
         return result;
     }
 

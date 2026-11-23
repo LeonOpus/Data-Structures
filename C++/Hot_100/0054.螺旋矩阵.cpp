@@ -22,18 +22,22 @@ public:
         vector<int> result;
         while (top <= bottom && left <= right)
         {
-            for (int c = left; c <= right; ++c) result.push_back(matrix[top][c]);
+            for (int c = left; c <= right; ++c)
+                result.push_back(matrix[top][c]);
             ++top;
-            for (int r = top; r <= bottom; ++r) result.push_back(matrix[r][right]);
+            for (int r = top; r <= bottom; ++r)
+                result.push_back(matrix[r][right]);
             --right;
             if (top <= bottom)
             {
-                for (int c = right; c >= left; --c) result.push_back(matrix[bottom][c]);
+                for (int c = right; c >= left; --c)
+                    result.push_back(matrix[bottom][c]);
                 --bottom;
             }
             if (left <= right)
             {
-                for (int r = bottom; r >= top; --r) result.push_back(matrix[r][left]);
+                for (int r = bottom; r >= top; --r)
+                    result.push_back(matrix[r][left]);
                 ++left;
             }
         }

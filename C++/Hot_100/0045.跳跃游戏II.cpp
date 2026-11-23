@@ -22,12 +22,12 @@ public:
         int result = 0;
         int cur_cover = 0;  // 当前覆盖的最远距离下标
         int next_cover = 0; // 下一步覆盖的最远距离下标
-        for (int i = 0; i < nums.size(); ++i)
+        for (int i = 0; i < nums.size(); i += 1)
         {
             next_cover = max(nums[i] + i, next_cover); // 收集下一步覆盖最远距离
             if (i == cur_cover)
-            {                                     // 遇到当前覆盖最远距离下标
-                result++;                         // 需要走下一步
+            {                                      // 走到当前覆盖边界,即遇到当前覆盖最远距离下标
+                result+=1;                         // 必须需要走下一步，所以result+=1
                 cur_cover = next_cover;           // 更新当前覆盖最远距离下标（相当于加油了）
                 if (cur_cover >= nums.size() - 1) // 当前覆盖最远距到达集合终点，不用做++操作了，直接结束
                     break;

@@ -1,7 +1,3 @@
-#include <vector>
-#include <iostream>
-#include <numeric>
-using namespace std;
 /*
 给你一个整数数组 nums 和一个整数 k ，请你返回子数组内所有元素的乘积严格小于 k 的连续子数组的数目。
 示例 1：
@@ -13,6 +9,10 @@ using namespace std;
 输入：nums = [1,2,3], k = 0
 输出：0
  */
+#include <vector>
+#include <iostream>
+#include <numeric>
+using namespace std;
 class Solution
 {
 public:
@@ -22,7 +22,7 @@ public:
             return 0;
         vector<vector<int>> result;
         vector<int> path;
-        for (int i = 0; i < nums.size(); i+= 1)
+        for (int i = 0; i < nums.size(); i += 1)
         {
             backtracking(i, 1, nums, k, path, result);
         }

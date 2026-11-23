@@ -1,8 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <numeric>
-using namespace std;
 /*
 给你一个整数数组 nums 和一个整数 k ，按以下方法修改该数组：
 选择某个下标 i 并将 nums[i] 替换为 -nums[i] 。
@@ -21,6 +16,11 @@ using namespace std;
 输出：13
 解释：选择下标 (1, 4) ，nums 变为 [2,3,-1,5,4]
 */
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+using namespace std;
 class Solution
 {
 public:

@@ -17,20 +17,33 @@ class Solution
 public:
     ListNode *removeNthFromEnd(ListNode *head, int n)
     {
-        ListNode dummy(0, head);
-        ListNode *fast = &dummy;
-        ListNode *slow = &dummy;
-        for (int i = 0; i < n; ++i)
+        if (!head)
         {
-            fast = fast->next;
+            return nullptr;
         }
-        while (fast->next != nullptr)
+        ListNode *dummy = new ListNode(0);
+        ListNode *fast = dummy;
+        ListNode *slow = dummy;
+        dummy->next = head;
+        n += 1;
+        while (fast && n > 0)
         {
             fast = fast->next;
+            n -= 1;
+        }
+        while (fast)
+        {
             slow = slow->next;
+            fast = fast->next;
         }
-        slow->next = slow->next->next;
-        return dummy.next;
+        ListNode *node = slow->next;
+        slow->next = node->next;
+        delete node;
+        node = nullptr;
+        ListNode *result = dummy->next;
+        delete dummy;
+        dummy = nullptr;
+        return result;
     }
 };
 

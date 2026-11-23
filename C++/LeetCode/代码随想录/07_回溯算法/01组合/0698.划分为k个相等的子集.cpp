@@ -1,8 +1,3 @@
-#include <iostream>
-#include <numeric>
-#include <vector>
-#include <algorithm>
-using namespace std;
 /*
 给定一个整数数组  nums 和一个正整数 k，找出是否有可能把这个数组分成 k 个非空子集，其总和都相等。
 示例 1：
@@ -13,7 +8,11 @@ using namespace std;
 输入: nums = [1,2,3,4], k = 3
 输出: false
 */
-
+#include <iostream>
+#include <numeric>
+#include <vector>
+#include <algorithm>
+using namespace std;
 class Solution
 {
 public:
@@ -34,7 +33,9 @@ public:
     {
         int currentSum = accumulate(path.begin(), path.end(), 0);
         if (currentSum > target) // 若当前子集的和超过目标值，停止当前分支的搜索
+        {
             return;
+        }
         if (currentSum == target)
         {
             result.push_back(path);

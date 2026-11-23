@@ -46,10 +46,10 @@ public:
             result.push_back(path);
             return;
         }
-        for (int i = start; i < candidates.size(); i += 1) // 当前取的是i，进入下一层递归的搜索起点是i，而不是i+1，因为可以重复取同一元素
+        for (int i = start; i < candidates.size(); i += 1)
         {
             path.push_back(candidates[i]);
-            backtracking(i, candidates, target, path, result);
+            backtracking(i, candidates, target, path, result); // 进入下一层递归的搜索起点是i，而不是i+1，因为可以重复取同一元素
             path.pop_back();
         }
     }

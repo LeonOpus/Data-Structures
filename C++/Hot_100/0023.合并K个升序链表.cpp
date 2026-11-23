@@ -18,29 +18,42 @@ class Solution
 public:
     ListNode *mergeKLists(vector<ListNode *> &lists)
     {
-        auto greaterValue = [](const ListNode *a, const ListNode *b) { return a->val > b->val; };
-        priority_queue<ListNode *, vector<ListNode *>, decltype(greaterValue)> pending(greaterValue);
-        for (ListNode *head : lists)
+        if (lists.empty())
         {
-            if (head != nullptr)
-            {
-                pending.push(head);
-            }
+            return nullptr;
         }
-        ListNode dummy;
-        ListNode *tail = &dummy;
-        while (!pending.empty())
+    }
+
+    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
+    {
+        ListNode *dummny = new ListNode(0);
+        ListNode *cur = dummny;
+        while (list1 && list2)
         {
-            ListNode *node = pending.top();
-            pending.pop();
-            if (node->next != nullptr)
+            if (list1->val > list2->val)
             {
-                pending.push(node->next);
+                cur->next = list2;
+                list2 = list2->next;
             }
-            tail->next = node;
-            tail = node;
+            else
+            {
+                cur->next = list1;
+                list1 = list1->next;
+            }
+            cur = cur->next;
         }
-        return dummy.next;
+        if (list1)
+        {
+            cur->next = list1;
+        }
+        if (list2)
+        {
+            cur->next = list2;
+        }
+        ListNode *reuslt = dummny->next;
+        delete dummny;
+        dummny = nullptr;
+        return reuslt;
     }
 };
 

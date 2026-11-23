@@ -16,24 +16,34 @@ class Solution
 public:
     ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
     {
-        ListNode dummy;
-        ListNode *tail = &dummy;
-        while (list1 != nullptr && list2 != nullptr)
+        ListNode *dummny = new ListNode(0);
+        ListNode *cur = dummny;
+        while (list1 && list2)
         {
-            if (list1->val <= list2->val)
+            if (list1->val > list2->val)
             {
-                tail->next = list1;
-                list1 = list1->next;
+                cur->next = list2;
+                list2 = list2->next;
             }
             else
             {
-                tail->next = list2;
-                list2 = list2->next;
+                cur->next = list1;
+                list1 = list1->next;
             }
-            tail = tail->next;
+            cur = cur->next;
         }
-        tail->next = list1 != nullptr ? list1 : list2;
-        return dummy.next;
+        if (list1)
+        {
+            cur->next = list1;
+        }
+        if (list2)
+        {
+            cur->next = list2;
+        }
+        ListNode *reuslt = dummny->next;
+        delete dummny;
+        dummny = nullptr;
+        return reuslt;
     }
 };
 

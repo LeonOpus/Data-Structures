@@ -1,6 +1,3 @@
-#include <iostream>
-#include <vector>
-using namespace std;
 /*
 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的
 子集（幂集）。
@@ -12,6 +9,9 @@ using namespace std;
 输入：nums = [0]
 输出：[[],[0]]
 */
+#include <iostream>
+#include <vector>
+using namespace std;
 class Solution
 {
 public:
